@@ -1,0 +1,2425 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>سفر قهرمان هندسه</title>
+  <style>
+    :root {
+      --bg-gradient: linear-gradient(135deg, #0a1428 0%, #1a2744 50%, #0f1c36 100%);
+      --navy: #1e293b;
+      --navy-light: #334155;
+      --turquoise: #0ea5e9;
+      --turquoise-dark: #0284c7;
+      --gold: #f59e0b;
+      --gold-dark: #d97706;
+      --coral: #f43f5e;
+      --coral-dark: #e11d48;
+      --violet: #8b5cf6;
+      --violet-dark: #7c3aed;
+      --emerald: #10b981;
+      --card-bg: #ffffff;
+      --text-main: #0f172a;
+      --text-muted: #64748b;
+      --radius-sm: 8px;
+      --radius-md: 14px;
+      --radius-lg: 20px;
+      --shadow-sm: 0 2px 4px rgba(0,0,0,0.05);
+      --shadow-md: 0 8px 16px rgba(0,0,0,0.08);
+      --shadow-lg: 0 12px 24px rgba(0,0,0,0.12);
+      --transition: all 0.25s ease;
+      --font-family: system-ui, -apple-system, "Segoe UI", Roboto, Tahoma, sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: var(--font-family);
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+  color: var(--text-main);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 16px;
+  direction: rtl;
+
+  position: relative;
+  overflow-x: hidden;
+}
+
+    #app-container {
+  width: 100%;
+  max-width: 900px;
+  background: rgba(255, 255, 255, 0.92);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  padding: 24px;
+  margin: 12px auto;
+
+  position: relative;
+  z-index: 1;
+  isolation: isolate;
+
+  overflow: hidden;
+  border: 1px solid rgba(226, 232, 240, 0.8);
+}
+
+    @media (max-width: 600px) {
+  body {
+    padding: 8px;
+  }
+
+  #app-container {
+    padding: 16px;
+    border-radius: var(--radius-md);
+  }
+
+    body::before {
+    background-size: 26px 26px;
+    opacity: 0.75;
+  }
+}
+
+    /* Typography & Helpers */
+    h1, h2, h3, h4 { color: var(--navy); font-weight: 800; text-align: center; }
+    h1 { font-size: 1.8rem; margin-bottom: 12px; color: var(--navy); }
+    h2 { font-size: 1.4rem; margin-bottom: 16px; }
+    p { line-height: 1.7; color: var(--navy-light); }
+    .text-center { text-align: center; }
+    .hidden { display: none !important; }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 12px 24px;
+      border-radius: var(--radius-md);
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      border: none;
+      transition: var(--transition);
+      outline: none;
+      text-decoration: none;
+      user-select: none;
+    }
+    .btn:focus-visible {
+      outline: 3px solid var(--turquoise);
+      outline-offset: 2px;
+    }
+    .btn:active { transform: scale(0.97); }
+    .btn-primary { background: linear-gradient(135deg, var(--turquoise), var(--turquoise-dark)); color: white; box-shadow: 0 4px 12px rgba(14, 165, 233, 0.3); }
+    .btn-primary:hover { background: linear-gradient(135deg, var(--turquoise-dark), #0369a1); }
+    .btn-gold { background: linear-gradient(135deg, var(--gold), var(--gold-dark)); color: white; box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3); }
+    .btn-gold:hover { background: linear-gradient(135deg, var(--gold-dark), #b45309); }
+    .btn-coral { background: linear-gradient(135deg, var(--coral), var(--coral-dark)); color: white; }
+    .btn-violet { background: linear-gradient(135deg, var(--violet), var(--violet-dark)); color: white; }
+    .btn-outline { background: transparent; border: 2px solid #cbd5e1; color: var(--navy); }
+    .btn-outline:hover { background: #f8fafc; border-color: #94a3b8; }
+    .btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none !important; }
+
+    /* Audio toggle & top status */
+    .top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      padding-bottom: 12px;
+      border-bottom: 2px solid #f1f5f9;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .audio-btn {
+      background: #f1f5f9;
+      border: 1px solid #cbd5e1;
+      padding: 6px 12px;
+      border-radius: var(--radius-sm);
+      font-size: 0.85rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    /* Start Screen */
+    .start-hero {
+      text-align: center;
+      margin-bottom: 24px;
+    }
+    .start-hero-icon {
+      font-size: 3.5rem;
+      margin-bottom: 8px;
+      display: inline-block;
+      animation: floatIcon 3s ease-in-out infinite;
+    }
+    @keyframes floatIcon {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+    }
+    .form-group {
+      margin-bottom: 18px;
+    }
+    .form-label {
+      display: block;
+      font-weight: 700;
+      margin-bottom: 6px;
+      color: var(--navy);
+      font-size: 0.95rem;
+    }
+    .form-input {
+      width: 100%;
+      padding: 12px 16px;
+      border-radius: var(--radius-md);
+      border: 2px solid #e2e8f0;
+      font-size: 1rem;
+      transition: var(--transition);
+      outline: none;
+    }
+    .form-input:focus {
+      border-color: var(--turquoise);
+      box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.15);
+    }
+    .avatar-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+    @media (max-width: 480px) {
+      .avatar-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    .avatar-option {
+      background: #f8fafc;
+      border: 2px solid #e2e8f0;
+      border-radius: var(--radius-md);
+      padding: 10px;
+      text-align: center;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    .avatar-option:hover {
+      border-color: var(--turquoise);
+      background: #f0f9ff;
+    }
+    .avatar-option.selected {
+      border-color: var(--turquoise);
+      background: #e0f2fe;
+      box-shadow: 0 0 0 2px var(--turquoise);
+    }
+    .avatar-option .emoji { font-size: 2rem; display: block; margin-bottom: 4px; }
+    .avatar-option .label { font-size: 0.85rem; font-weight: 700; color: var(--navy); }
+
+    .timer-toggle-box {
+      background: #f8fafc;
+      border-radius: var(--radius-md);
+      padding: 14px;
+      margin-bottom: 24px;
+      border: 1px solid #e2e8f0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .timer-toggle-box label {
+      font-weight: 700;
+      font-size: 0.95rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .error-msg {
+      color: var(--coral-dark);
+      background: #ffe4e6;
+      border: 1px solid #fecdd3;
+      padding: 10px 14px;
+      border-radius: var(--radius-sm);
+      font-size: 0.9rem;
+      margin-bottom: 16px;
+      display: none;
+    }
+
+    /* Island Map & Header */
+    .game-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #f8fafc;
+      padding: 12px 18px;
+      border-radius: var(--radius-md);
+      margin-bottom: 16px;
+      border: 1px solid #e2e8f0;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .player-info-badge {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 700;
+    }
+    .score-badge {
+      background: #fef3c7;
+      color: #92400e;
+      padding: 6px 12px;
+      border-radius: var(--radius-sm);
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      border: 1px solid #fde68a;
+    }
+    .timer-badge {
+      background: #fee2e2;
+      color: #991b1b;
+      padding: 6px 12px;
+      border-radius: var(--radius-sm);
+      font-weight: 800;
+      border: 1px solid #fecaca;
+    }
+
+    /* Island Progress Map */
+    .islands-container {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 8px;
+      margin-bottom: 20px;
+    }
+    @media (max-width: 650px) {
+      .islands-container { grid-template-columns: repeat(4, 1fr); }
+    }
+    @media (max-width: 400px) {
+      .islands-container { grid-template-columns: repeat(3, 1fr); }
+    }
+    .island-card {
+      background: #f8fafc;
+      border: 2px solid #e2e8f0;
+      border-radius: var(--radius-sm);
+      padding: 8px 4px;
+      text-align: center;
+      transition: var(--transition);
+      position: relative;
+    }
+    .island-card.active {
+      border-color: var(--turquoise);
+      background: #e0f2fe;
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-sm);
+    }
+    .island-card.completed {
+      border-color: var(--emerald);
+      background: #ecfdf5;
+    }
+    .island-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 42px;
+  margin-bottom: 2px;
+}
+.island-icon svg {
+  width: 36px;
+  height: 36px;
+  display: block;
+}
+    .island-name { font-size: 0.72rem; font-weight: 700; color: var(--navy); white-space: normal; overflow: hidden; text-overflow: ellipsis; }
+    .island-status { font-size: 0.65rem; color: var(--text-muted); }
+
+    /* Question Box */
+    .question-box {
+      background: #ffffff;
+      border: 2px solid #e2e8f0;
+      border-radius: var(--radius-md);
+      padding: 20px;
+      margin-bottom: 20px;
+      box-shadow: var(--shadow-sm);
+    }
+    .question-prompt {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--navy);
+      line-height: 1.8;
+      margin-bottom: 16px;
+    }
+    .diagram-wrap {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 16px 0;
+      background: #fafafa;
+      border-radius: var(--radius-md);
+      padding: 12px;
+      border: 1px dashed #cbd5e1;
+      min-height: 180px;
+    }
+    .diagram-wrap svg {
+      max-width: 100%;
+      height: auto;
+      max-height: 220px;
+    }
+
+    /* Input & Action Area */
+    .answer-form {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      margin-top: 16px;
+      flex-wrap: wrap;
+    }
+    .answer-input-wrap {
+      flex: 1;
+      min-width: 180px;
+      position: relative;
+    }
+    .answer-input {
+      width: 100%;
+      padding: 12px 16px;
+      font-size: 1.1rem;
+      border-radius: var(--radius-md);
+      border: 2px solid #cbd5e1;
+      outline: none;
+      font-weight: 700;
+      transition: var(--transition);
+      text-align: center;
+    }
+    .answer-input:focus {
+      border-color: var(--turquoise);
+      box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.15);
+    }
+
+    /* Isolated tokens keep Persian labels readable and math ordered left to right. */
+    .math-steps { margin-top: 12px; }
+    .math-line + .math-line { margin-top: 8px; }
+    .math-line {
+      direction: ltr;
+      unicode-bidi: isolate;
+      text-align: left;
+      display: block;
+      white-space: nowrap;
+      overflow-x: auto;
+      padding: 8px 0;
+      line-height: 2.2;
+    }
+    .audio-controls { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+    .volume-control { display: flex; align-items: center; gap: 6px; font-size: 0.85rem; }
+    #volumeSlider { width: 110px; accent-color: var(--navy); direction: ltr; }
+    #volumeValue { min-width: 3em; }
+    .math-fraction {
+      display: inline-grid;
+      grid-template-rows: auto auto;
+      vertical-align: middle;
+      text-align: center;
+      direction: ltr;
+      unicode-bidi: isolate;
+      line-height: 1.6;
+      margin: 0 0.2em;
+    }
+    .math-numerator { border-bottom: 2px solid currentColor; padding: 0 0.3em 0.1em; }
+    .math-denominator { padding: 0.1em 0.3em 0; }
+    .math-line bdi { unicode-bidi: isolate; }
+    .math-operator { display: inline-block; margin-inline: 0.35em; }
+    .math-note { direction: rtl; text-align: right; margin-top: 6px; }
+
+    /* Feedback & Solution */
+    .feedback-box {
+      padding: 14px 18px;
+      border-radius: var(--radius-md);
+      margin-top: 16px;
+      line-height: 1.7;
+      font-size: 0.95rem;
+      animation: fadeIn 0.3s ease;
+    }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+    .feedback-correct { background: #dcfce7; border: 1px solid #86efac; color: #14532d; }
+    .feedback-warning { background: #fef3c7; border: 1px solid #fde68a; color: #78350f; }
+    .feedback-wrong { background: #fee2e2; border: 1px solid #fca5a5; color: #7f1d1d; }
+    /* ===== Toast Notification (اعلان بالای صفحه) ===== */
+#toast {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 9999;
+  padding: 14px 28px;
+  border-radius: 9999px;
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: white;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  display: none;
+  align-items: center;
+  gap: 10px;
+  white-space: nowrap;
+  transition: all 0.3s ease;
+}
+
+#toast.correct {
+  background: linear-gradient(90deg, #22c55e, #16a34a);
+  box-shadow: 0 0 20px rgba(34, 197, 94, 0.6);
+}
+
+#toast.wrong {
+  background: linear-gradient(90deg, #ef4444, #b91c1c);
+  box-shadow: 0 0 20px rgba(239, 68, 68, 0.6);
+}
+
+.hint-box {
+      background: #f3e8ff;
+      border: 1px solid #d8b4fe;
+      color: #581c87;
+      padding: 12px 16px;
+      border-radius: var(--radius-md);
+      margin-top: 12px;
+      font-size: 0.95rem;
+    }
+
+    /* Game controls bottom */
+    .controls-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      margin-top: 16px;
+      flex-wrap: wrap;
+    }
+
+    /* Report Card */
+    .report-card {
+      text-align: center;
+      padding: 20px 10px;
+    }
+    .medal-icon {
+      font-size: 4rem;
+      margin-bottom: 8px;
+      animation: bounce 1.5s infinite alternate;
+    }
+    @keyframes bounce { from { transform: scale(0.9); } to { transform: scale(1.1); } }
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin: 24px 0;
+    }
+    @media (max-width: 500px) {
+      .stats-grid { grid-template-columns: 1fr; }
+    }
+    .stat-item {
+      background: #f8fafc;
+      border-radius: var(--radius-md);
+      padding: 14px;
+      border: 1px solid #e2e8f0;
+    }
+    .stat-val { font-size: 1.5rem; font-weight: 800; color: var(--turquoise-dark); margin-bottom: 4px; }
+    .stat-lbl { font-size: 0.85rem; color: var(--text-muted); font-weight: 600; }
+
+    .breakdown-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0;
+      text-align: right;
+      font-size: 0.9rem;
+    }
+    .breakdown-table th, .breakdown-table td {
+      padding: 10px 12px;
+      border-bottom: 1px solid #e2e8f0;
+    }
+    .breakdown-table th {
+      background: #f1f5f9;
+      color: var(--navy);
+      font-weight: 700;
+    }
+    .badge-success { background: #dcfce7; color: #166534; padding: 2px 8px; border-radius: 4px; font-weight: 700; font-size: 0.75rem; }
+    .badge-partial { background: #fef3c7; color: #92400e; padding: 2px 8px; border-radius: 4px; font-weight: 700; font-size: 0.75rem; }
+    .badge-fail { background: #fee2e2; color: #991b1b; padding: 2px 8px; border-radius: 4px; font-weight: 700; font-size: 0.75rem; }
+
+.status-first {
+  background: #dcfce7;
+  color: #166534;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-weight: 700;
+  font-size: 0.8rem;
+}
+
+.status-second {
+  background: #cffafe;
+  color: #0e7490;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-weight: 700;
+  font-size: 0.8rem;
+}
+
+.status-need {
+  background: #fefce8;
+  color: #854d0e;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-weight: 700;
+  font-size: 0.8rem;
+}
+
+    /* Confetti Canvas */
+    #confetti-canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 99;
+    }
+
+    /* Print styles */
+    @media print {
+      body { background: white; padding: 0; }
+      #app-container { box-shadow: none; border: none; width: 100%; max-width: 100%; margin: 0; }
+      .no-print { display: none !important; }
+      .btn { display: none !important; }
+      .islands-container { display: none !important; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, ::before, ::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+    }
+    .island-status.conquered { color:#059669; font-weight:800; }
+    .island-status.exploring { color:#0d9488; font-weight:800; }
+    .island-status.practice { color:#d97706; font-weight:800; }
+    .island-status.locked { color:#94a3b8; font-weight:700; }
+/* ===== پس‌زمینه نئونی حرفه‌ای - مطابق دقیق تصویر (74) ===== */
+body {
+  margin: 0; padding: 0;
+  font-family: 'Vazirmatn', 'Tahoma', sans-serif;
+  background: radial-gradient(circle at 50% 45%, #0a1428 0%, #0b2855 35%, #061a3b 68%, #031329 100%);
+  min-height: 100vh;
+  color: #1f2937;
+  position: relative;
+  overflow-x: hidden;
+}
+
+body::before {
+  content: ""; position: fixed; inset: 0;
+  z-index: 0; pointer-events: none;
+  background-image:
+    linear-gradient(rgba(70,180,255,0.055) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(70,180,255,0.055) 1px, transparent 1px);
+  background-size: 42px 42px;
+  opacity: 0.55;
+}
+
+body::after {
+  content: ""; position: fixed; inset: -5%;
+  z-index: 0; pointer-events: none;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 100% 100%;
+  opacity: 0.97;
+  
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1600 900'%3E%3Cdefs%3E%3ClinearGradient id='beam' x1='0' y1='0' x2='1' y2='0'%3E%3Cstop offset='0' stop-color='%2300cfff' stop-opacity='0'/%3E%3Cstop offset='.5' stop-color='%2300cfff' stop-opacity='.6'/%3E%3Cstop offset='1' stop-color='%2300cfff' stop-opacity='0'/%3E%3C/linearGradient%3E%3CradialGradient id='cyanGlow' cx='50%25' cy='50%25' r='65%25'%3E%3Cstop offset='0%25' stop-color='%2300f0ff' stop-opacity='0.35'/%3E%3Cstop offset='60%25' stop-color='%2300cfff' stop-opacity='0.12'/%3E%3Cstop offset='100%25' stop-color='%2300cfff' stop-opacity='0'/%3E%3C/radialGradient%3E%3CradialGradient id='goldGlow' cx='50%25' cy='50%25' r='70%25'%3E%3Cstop offset='0%25' stop-color='%23ffe070' stop-opacity='0.4'/%3E%3Cstop offset='100%25' stop-color='%23ffd15c' stop-opacity='0'/%3E%3C/radialGradient%3E%3C/defs%3E%3Cg fill='none' stroke-linecap='round'%3E%3Cpath d='M-100 260 L520 -80' stroke='%2300bfff' stroke-width='16' opacity='.15'/%3E%3Cpath d='M-100 270 L520 -70' stroke='%2300d9ff' stroke-width='4' opacity='.9'/%3E%3Cpath d='M1080 930 L1700 560' stroke='%2300bfff' stroke-width='18' opacity='.13'/%3E%3Cpath d='M1100 930 L1700 570' stroke='%2300d9ff' stroke-width='4' opacity='.85'/%3E%3Cpolygon points='130,55 220,190 40,190' fill='url(%23cyanGlow)' stroke='%2300eaff' stroke-width='8' opacity='.95'/%3E%3Ccircle cx='145' cy='455' r='72' fill='url(%23cyanGlow)' stroke='%2300eaff' stroke-width='8' opacity='.92'/%3E%3Cpolygon points='1435,250 1520,380 1350,380' fill='url(%23cyanGlow)' stroke='%2300eaff' stroke-width='8' opacity='.92'/%3E%3Ccircle cx='1430' cy='675' r='65' fill='url(%23cyanGlow)' stroke='%2300f0ff' stroke-width='8' opacity='.9'/%3E%3Cpolygon points='1510,165 1570,265 1445,245' fill='url(%23goldGlow)' stroke='%23ffd15c' stroke-width='7' opacity='.95'/%3E%3Cpolygon points='1500,790 1535,755 1570,790 1535,825' fill='url(%23goldGlow)' stroke='%23ffd15c' stroke-width='7' opacity='.95'/%3E%3Cpolygon points='245,285 275,275 285,310 250,320' fill='url(%23goldGlow)' stroke='%23ffd15c' stroke-width='6' opacity='.9'/%3E%3Cpolygon points='250,600 315,700 215,690' fill='url(%23goldGlow)' stroke='%23ffd15c' stroke-width='7' opacity='.9'/%3E%3Cpolygon points='180,780 280,880 80,880' fill='url(%23cyanGlow)' stroke='%2300eaff' stroke-width='9' opacity='.9'/%3E%3C/g%3E%3Cg fill='%23ffffff'%3E%3Cpolygon points='320,85 328,105 350,105 332,118 340,140 320,125 300,140 308,118 290,105 312,105'/%3E%3Cpolygon points='1280,820 1288,840 1310,840 1292,853 1300,875 1280,860 1260,875 1268,853 1250,840 1272,840'/%3E%3C/g%3E%3Cg%3E%3Ccircle cx='280' cy='120' r='3.5' fill='%2300f0ff' opacity='0.95'/%3E%3Ccircle cx='520' cy='80' r='2.8' fill='%23ffd15c' opacity='0.9'/%3E%3Ccircle cx='780' cy='210' r='3.2' fill='%2300eaff' opacity='0.92'/%3E%3Ccircle cx='1050' cy='95' r='2.5' fill='%2300f0ff' opacity='0.88'/%3E%3Ccircle cx='1350' cy='180' r='3.8' fill='%23ffe070' opacity='0.95'/%3E%3Ccircle cx='220' cy='380' r='2.6' fill='%2300eaff' opacity='0.9'/%3E%3Ccircle cx='650' cy='320' r='3.1' fill='%2300f0ff' opacity='0.93'/%3E%3Ccircle cx='920' cy='450' r='2.9' fill='%23ffd15c' opacity='0.9'/%3E%3Ccircle cx='1480' cy='310' r='3.5' fill='%2300eaff' opacity='0.92'/%3E%3Ccircle cx='380' cy='620' r='2.7' fill='%23ffe070' opacity='0.88'/%3E%3Ccircle cx='710' cy='710' r='3.3' fill='%2300f0ff' opacity='0.94'/%3E%3Ccircle cx='1100' cy='680' r='2.8' fill='%2300eaff' opacity='0.9'/%3E%3Ccircle cx='1400' cy='580' r='3.6' fill='%23ffd15c' opacity='0.93'/%3E%3Ccircle cx='160' cy='820' r='2.4' fill='%2300f0ff' opacity='0.87'/%3E%3Ccircle cx='480' cy='850' r='3.0' fill='%23ffe070' opacity='0.91'/%3E%3Ccircle cx='890' cy='790' r='2.6' fill='%2300eaff' opacity='0.9'/%3E%3Ccircle cx='1250' cy='850' r='3.4' fill='%2300f0ff' opacity='0.92'/%3E%3C/g%3E%3C/svg%3E");
+
+  filter: drop-shadow(0 0 10px rgba(0, 230, 255, 0.75))
+          drop-shadow(0 0 26px rgba(0, 160, 255, 0.45))
+          drop-shadow(0 0 45px rgba(0, 200, 255, 0.25));
+
+  animation: neonBackgroundFloat 42s ease-in-out infinite alternate;
+  will-change: transform;
+}
+
+@keyframes neonBackgroundFloat {
+  0%   { transform: translate3d(0, 0, 0) scale(1); }
+  50%  { transform: translate3d(1.4%, 1.2%, 0) scale(1.015); }
+  100% { transform: translate3d(0, 0, 0) scale(1); }
+}
+
+  </style>
+</head>
+<body>
+<div id="toast"></div>
+<div id="app-container">
+  <canvas id="confetti-canvas"></canvas>
+
+  <!-- Top bar -->
+  <header class="top-bar">
+    <div style="font-weight:800; color:var(--navy); font-size:1.1rem;">🏛️ سفر قهرمان هندسه</div>
+    <div class="audio-controls">
+      <audio id="bgMusic" src="music.mp3" loop></audio>
+      <button type="button" class="audio-btn" id="audioToggleBtn" title="تغییر وضعیت صدا" aria-pressed="true">
+        <span id="audioIcon">🔊</span> <span id="audioText">صدا: روشن</span>
+      </button>
+      <div class="volume-control">
+        <label for="volumeSlider">بلندی صدا</label>
+        <input type="range" id="volumeSlider" min="0" max="100" step="1" value="50" aria-valuetext="۵۰ درصد">
+        <output id="volumeValue" for="volumeSlider">۵۰٪</output>
+      </div>
+    </div>
+  </header>
+
+  <!-- Start Screen -->
+  <section id="startScreen">
+    <div class="start-hero">
+      <div class="start-hero-icon">🗺️📐✨</div>
+      <h1>به سرزمین شگفت‌انگیز اشکال هندسی خوش آمدید!</h1>
+      <p>در این ماجراجویی، با سفر به ۷ جزیره جادویی و حل چالش‌های محیط و مساحت، نشان قهرمانی را فتح کنید.</p>
+          <p style="margin-top:8px; font-size:0.9rem; color:#475569;">طراح: محمد رضازاده مقدم</p>
+<div style="margin-top:6px; font-size:0.85rem;">
+  <a href="https://eitaa.com/MathClub789" target="_blank" 
+     style="color:#0ea5e9; text-decoration:none; display:inline-flex; align-items:center; gap:6px;">
+    📱 آیدی کانال : MathClub789 (برای ورود کلیک کنید.)
+  </a>
+</div>
+    </div>
+
+    <div class="error-msg" id="startValidationMsg" role="alert"></div>
+
+    <form id="startForm" novalidate>
+      <div style="background:#f0f9ff; border:2px solid #7dd3fc; border-radius:16px; padding:18px; margin-bottom:20px;">
+        <h2 style="font-size:1.15rem; color:var(--navy); margin-bottom:8px;">📝 مشخصات قهرمان</h2>
+        <p id="playerDetailsHelp" style="font-size:0.9rem; color:#475569; margin-bottom:16px;">برای شروع بازی، نام و نام خانوادگی و شماره کلاس خود را وارد کنید. تکمیل هر دو بخش الزامی است.</p>
+        <div class="form-group">
+          <label class="form-label" for="fullNameInput">نام و نام خانوادگی قهرمان *</label>
+          <input type="text" id="fullNameInput" class="form-input" placeholder="نام و نام خانوادگی خود را بنویسید؛ مثال: علی محمدی" autocomplete="name" aria-describedby="playerDetailsHelp" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="classNumberInput">شماره کلاس *</label>
+          <input type="text" id="classNumberInput" class="form-input" placeholder="شماره کلاس خود را بنویسید؛ مثال: ۷/۱" autocomplete="off" aria-describedby="playerDetailsHelp" required>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">آواتار ماجراجوی خود را انتخاب کنید:</label>
+        <div class="avatar-grid" role="radiogroup" aria-label="انتخاب آواتار">
+          <div class="avatar-option selected" tabindex="0" role="radio" aria-checked="true" data-avatar="🧙‍♂️" data-name="فرزانه دانا">
+            <span class="emoji">🧙‍♂️</span>
+            <span class="label">فرزانه دانا</span>
+          </div>
+          <div class="avatar-option" tabindex="0" role="radio" aria-checked="false" data-avatar="🧭" data-name="کاوشگر هندسه">
+            <span class="emoji">🧭</span>
+            <span class="label">کاوشگر هندسه</span>
+          </div>
+          <div class="avatar-option" tabindex="0" role="radio" aria-checked="false" data-avatar="🦁" data-name="شیر شجاع">
+            <span class="emoji">🦁</span>
+            <span class="label">شیر شجاع</span>
+          </div>
+          <div class="avatar-option" tabindex="0" role="radio" aria-checked="false" data-avatar="🚀" data-name="کاشف فضا">
+            <span class="emoji">🚀</span>
+            <span class="label">کاشف فضا</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="timer-toggle-box">
+        <label for="timerCheckbox">
+          <input type="checkbox" id="timerCheckbox" style="width:18px; height:18px; accent-color:var(--turquoise-dark);">
+          <span>⏱️ حالت زمان‌دار (۳۰ ثانیه برای هر سوال)</span>
+        </label>
+        <span style="font-size:0.8rem; color:var(--text-muted);">(پیش‌فرض: بدون محدودیت زمان)</span>
+      </div>
+
+      <div id="bestScoreBanner" style="display:none; background:#ecfdf5; border:1px solid #a7f3d0; padding:10px 14px; border-radius:var(--radius-md); margin-bottom:16px; font-weight:700; color:#065f46; text-align:center;"></div>
+
+      <button type="submit" id="startAdventureBtn" class="btn btn-primary" style="width:100%; font-size:1.15rem; padding:14px;">
+        🚀 شروع ماجراجویی هندسه
+      </button>
+    </form>
+  </section>
+
+  <!-- Game Screen -->
+  <section id="gameScreen" class="hidden">
+    <div class="game-header">
+      <div class="player-info-badge">
+        <span id="playerAvatarDisplay" style="font-size:1.6rem;">🧙‍♂️</span>
+        <div>
+          <div id="playerNameDisplay" style="font-size:1rem; color:var(--navy);">قهرمان</div>
+          <div style="font-size:0.75rem; color:var(--text-muted);">سوال <span id="currentQuestionNum">۱</span> از <span id="totalQuestionsNum">۱۴</span></div>
+        </div>
+      </div>
+      <div style="display:flex; gap:10px; align-items:center;">
+        <div id="timerDisplayBox" class="timer-badge hidden">⏱️ <span id="timerSeconds">۹۰</span> ثانیه</div>
+        <div class="score-badge">⭐ امتیاز: <span id="currentScoreDisplay">۰</span></div>
+      </div>
+    </div>
+
+    <!-- Island Map Progress -->
+    <div class="islands-container" id="islandsContainer" aria-label="نقشه جزایر هندسه">
+      <!-- Generated via JS -->
+    </div>
+
+    <!-- Question Box -->
+    <div class="question-box">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+        <span id="islandBadge" style="background:#e0f2fe; color:var(--turquoise-dark); padding:4px 10px; border-radius:var(--radius-sm); font-size:0.85rem; font-weight:700;">جزیره ۱: مربع</span>
+        <span id="attemptIndicator" style="font-size:0.85rem; font-weight:700; color:var(--gold-dark);">تلاش اول (۱۰۰ امتیاز)</span>
+      </div>
+
+      <div class="question-prompt" id="questionPromptText">در حال بارگذاری سوال...</div>
+
+      <div class="diagram-wrap" id="diagramContainer">
+        <!-- SVG diagram here -->
+      </div>
+
+      <div class="answer-form">
+        <div class="answer-input-wrap">
+          <input type="text" id="answerInput" class="answer-input" placeholder="پاسخ عددی خود را وارد کنید..." autocomplete="off" inputmode="decimal">
+        </div>
+        <button type="button" id="submitAnswerBtn" class="btn btn-primary">ثبت پاسخ ✅</button>
+        <button type="button" id="hintBtn" class="btn btn-gold">💡 راهنمایی فرمول</button>
+      </div>
+
+      <div id="hintContainer" class="hint-box hidden"></div>
+      <div id="feedbackContainer" class="feedback-box hidden"></div>
+    </div>
+
+    <div class="controls-row">
+      <button type="button" id="nextQuestionBtn" class="btn btn-violet" disabled>سوال بعدی ➔</button>
+      <button type="button" id="quitGameBtn" class="btn btn-outline" style="font-size:0.85rem;">خروج 🚪</button>
+    </div>
+  </section>
+
+  <!-- Report Screen -->
+  <section id="reportScreen" class="hidden">
+    <div class="report-card">
+      <div class="medal-icon" id="reportMedal">🏆</div>
+      <h2 id="reportTitle">پایان ماجراجویی شگفت‌انگیز!</h2>
+      <p id="reportSubtext">آفرین به شما قهرمان هندسه! کارنامه درخشان شما آماده است:</p>
+      <p style="margin-top:8px; font-weight:700;">شماره کلاس: <bdi id="reportClassNumber"></bdi></p>
+
+      <div class="stats-grid">
+        <div class="stat-item">
+          <div class="stat-val" id="finalScoreVal">۰ / ۱۴۰۰</div>
+          <div class="stat-lbl">مجموع امتیاز کسب شده</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-val" id="firstTryVal">۰</div>
+          <div class="stat-lbl">پاسخ در تلاش اول</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-val" id="hintsUsedVal">۰</div>
+          <div class="stat-lbl">تعداد راهنمایی‌های دریافتی</div>
+        </div>
+      </div>
+
+      <h3 style="text-align:right; margin-top:24px; margin-bottom:8px;">📊 عملکرد به تفکیک اشکال هندسی:</h3>
+      <div style="overflow-x:auto;">
+        <table class="breakdown-table">
+          <thead>
+            <tr>
+              <th>شکل هندسی</th>
+              <th>محیط</th>
+              <th>مساحت</th>
+              <th>وضعیت جزیره</th>
+            </tr>
+          </thead>
+          <tbody id="breakdownTableBody">
+            <!-- Filled via JS -->
+          </tbody>
+        </table>
+      </div>
+
+      <div style="display:flex; gap:10px; justify-content:center; flex-wrap:wrap; margin-top:24px;" class="no-print">
+        <button type="button" id="retryMissedBtn" class="btn btn-coral hidden">تمرین مجدد سوالات اشتباه 🔄</button>
+        <button type="button" id="playAgainBtn" class="btn btn-primary">شروع مجدد ماجراجویی 🎮</button>
+        <button type="button" id="printReportBtn" class="btn btn-outline">کپی گزارش عملکرد 📋</button>
+      </div>
+    </div>
+  </section>
+</div>
+
+<script>
+/**
+ * هندسه ماجراجویانه - Persian Offline Geometry Game
+ * No external dependencies. Pure inline JS & SVG.
+ */
+document.addEventListener('DOMContentLoaded', function() {
+  // State variables
+  var state = {
+    fullName: '',
+    classNumber: '',
+    avatar: '🧙‍♂️',
+    avatarName: 'فرزانه دانا',
+    isTimed: false,
+    audioEnabled: true,
+    volume: 0.5,
+    questions: [],
+    currentIndex: 0,
+    score: 0,
+    currentAttempt: 1,
+    hintUsedForCurrent: false,
+    questionResolved: false,
+    timerInterval: null,
+    timeRemaining: 90,
+    timerPaused: false,
+    results: [], // history of each question
+    firstTryResults: [], // بایگانی نتایج بار اول (برای گزارش پس از تمرین)
+    isRetryMode: false
+  };
+
+  // Shared audio context and master gain for every game effect.
+  var audioCtx = null;
+  var masterGain = null;
+  function getAudioContext() {
+    if (!audioCtx && (window.AudioContext || window.webkitAudioContext)) {
+      var AudioCtor = window.AudioContext || window.webkitAudioContext;
+      audioCtx = new AudioCtor();
+      masterGain = audioCtx.createGain();
+      masterGain.gain.value = state.audioEnabled ? state.volume : 0;
+      masterGain.connect(audioCtx.destination);
+    }
+    return audioCtx;
+  }
+
+  function playSound(type) {
+  if (!state.audioEnabled) return;
+    try {
+      var ctx = getAudioContext();
+      if (!ctx) return;
+      if (ctx.state === 'suspended') {
+        ctx.resume();
+      }
+      var now = ctx.currentTime;
+      var osc = ctx.createOscillator();
+      var gain = ctx.createGain();
+      osc.connect(gain);
+      gain.connect(masterGain);
+
+      if (type === 'correct') {
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(523.25, now); // C5
+        osc.frequency.exponentialRampToValueAtTime(659.25, now + 0.1); // E5
+        osc.frequency.exponentialRampToValueAtTime(783.99, now + 0.2); // G5
+        gain.gain.setValueAtTime(0.2, now);
+        gain.gain.exponentialRampToValueAtTime(0.01, now + 0.35);
+        osc.start(now);
+        osc.stop(now + 0.35);
+      } else if (type === 'wrong') {
+        osc.type = 'sawtooth';
+        osc.frequency.setValueAtTime(300, now);
+        osc.frequency.linearRampToValueAtTime(180, now + 0.25);
+        gain.gain.setValueAtTime(0.2, now);
+        gain.gain.exponentialRampToValueAtTime(0.01, now + 0.3);
+        osc.start(now);
+        osc.stop(now + 0.3);
+      } else if (type === 'hint') {
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(440, now);
+        osc.frequency.setValueAtTime(554.37, now + 0.1);
+        gain.gain.setValueAtTime(0.15, now);
+        gain.gain.exponentialRampToValueAtTime(0.01, now + 0.25);
+        osc.start(now);
+        osc.stop(now + 0.25);
+      } else if (type === 'victory') {
+        var notes = [523.25, 659.25, 783.99, 1046.50];
+        notes.forEach(function(freq, idx) {
+          var o = ctx.createOscillator();
+          var g = ctx.createGain();
+          o.connect(g);
+          g.connect(masterGain);
+          o.type = 'sine';
+          o.frequency.setValueAtTime(freq, now + idx * 0.12);
+          g.gain.setValueAtTime(0.2, now + idx * 0.12);
+          g.gain.exponentialRampToValueAtTime(0.01, now + idx * 0.12 + 0.25);
+          o.start(now + idx * 0.12);
+          o.stop(now + idx * 0.12 + 0.25);
+        });
+      }
+    } catch (e) {
+      // Audio fallback fail silently
+    }
+  }
+function showToast(message, type) {
+  const toast = document.getElementById('toast');
+  if (!toast) return;
+
+  toast.textContent = message;
+  toast.className = type;           // 'correct' یا 'wrong'
+  toast.style.display = 'flex';
+
+  // پخش صدا
+  playSound(type);
+
+  // مخفی شدن خودکار بعد از ۱.۸ ثانیه
+  setTimeout(() => {
+    toast.style.display = 'none';
+  }, 1800);
+}
+
+function playMysteriousClick() {
+    if (!state.audioEnabled) return;
+
+    const audioCtx = getAudioContext();
+    if (!audioCtx) return;
+    if (audioCtx.state === 'suspended') audioCtx.resume().catch(() => {});
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+    const filter = audioCtx.createBiquadFilter();
+
+    osc.type = 'sine';
+    osc.frequency.value = 220;
+
+    filter.type = 'lowpass';
+    filter.frequency.value = 800;
+
+    gain.gain.value = 0.25;
+
+    const decay = audioCtx.createGain();
+    decay.gain.value = 1;
+
+    osc.connect(filter);
+    filter.connect(decay);
+    decay.connect(gain);
+    gain.connect(masterGain);
+
+    osc.start();
+    decay.gain.linearRampToValueAtTime(0.001, audioCtx.currentTime + 0.6);
+    osc.stop(audioCtx.currentTime + 0.65);
+}
+
+  // DOM Elements
+  var elStartScreen = document.getElementById('startScreen');
+  var elGameScreen = document.getElementById('gameScreen');
+  var elReportScreen = document.getElementById('reportScreen');
+  var elStartValidationMsg = document.getElementById('startValidationMsg');
+  var elFullName = document.getElementById('fullNameInput');
+  var elClassNumber = document.getElementById('classNumberInput');
+  var elTimerCheckbox = document.getElementById('timerCheckbox');
+  var elStartAdventureBtn = document.getElementById('startAdventureBtn');
+  var elAudioToggleBtn = document.getElementById('audioToggleBtn');
+  var elBgMusic = document.getElementById('bgMusic');
+  var elAudioIcon = document.getElementById('audioIcon');
+  var elAudioText = document.getElementById('audioText');
+  var elBestScoreBanner = document.getElementById('bestScoreBanner');
+
+  var elPlayerAvatarDisplay = document.getElementById('playerAvatarDisplay');
+  var elPlayerNameDisplay = document.getElementById('playerNameDisplay');
+  var elCurrentQuestionNum = document.getElementById('currentQuestionNum');
+  var elTotalQuestionsNum = document.getElementById('totalQuestionsNum');
+  var elCurrentScoreDisplay = document.getElementById('currentScoreDisplay');
+  var elTimerDisplayBox = document.getElementById('timerDisplayBox');
+  var elTimerSeconds = document.getElementById('timerSeconds');
+  var elIslandsContainer = document.getElementById('islandsContainer');
+
+  var elIslandBadge = document.getElementById('islandBadge');
+  var elAttemptIndicator = document.getElementById('attemptIndicator');
+  var elQuestionPromptText = document.getElementById('questionPromptText');
+  var elDiagramContainer = document.getElementById('diagramContainer');
+  var elAnswerInput = document.getElementById('answerInput');
+  var elSubmitAnswerBtn = document.getElementById('submitAnswerBtn');
+  var elHintBtn = document.getElementById('hintBtn');
+  var elHintContainer = document.getElementById('hintContainer');
+  var elFeedbackContainer = document.getElementById('feedbackContainer');
+  var elNextQuestionBtn = document.getElementById('nextQuestionBtn');
+  var elQuitGameBtn = document.getElementById('quitGameBtn');
+
+  var elReportMedal = document.getElementById('reportMedal');
+  var elReportTitle = document.getElementById('reportTitle');
+  var elReportSubtext = document.getElementById('reportSubtext');
+  var elReportClassNumber = document.getElementById('reportClassNumber');
+  var elFinalScoreVal = document.getElementById('finalScoreVal');
+  var elFirstTryVal = document.getElementById('firstTryVal');
+  var elHintsUsedVal = document.getElementById('hintsUsedVal');
+  var elBreakdownTableBody = document.getElementById('breakdownTableBody');
+  var elRetryMissedBtn = document.getElementById('retryMissedBtn');
+  var elPlayAgainBtn = document.getElementById('playAgainBtn');
+  var elPrintReportBtn = document.getElementById('printReportBtn');
+
+  var islandsInfo = [
+  { id: 'square',        name: 'مربع',          color: '#ef4444', svg: '<svg width="36" height="36" viewBox="0 0 36 36"><rect x="4" y="4" width="28" height="28" fill="#ef4444" stroke="#b91c1c" stroke-width="2"/></svg>' },
+  { id: 'rectangle',     name: 'مستطیل',        color: '#3b82f6', svg: '<svg width="36" height="36" viewBox="0 0 36 36"><rect x="3" y="8" width="30" height="20" fill="#3b82f6" stroke="#1e40af" stroke-width="2"/></svg>' },
+  { id: 'parallelogram', name: 'متوازی‌الاضلاع', color: '#f97316', svg: '<svg width="36" height="36" viewBox="0 0 36 36"><polygon points="6,30 30,30 26,6 2,6" fill="#f97316" stroke="#c2410c" stroke-width="2"/></svg>' },
+  { id: 'triangle',      name: 'مثلث',          color: '#f59e0b', svg: '<svg width="36" height="36" viewBox="0 0 36 36"><polygon points="18,4 32,32 4,32" fill="#f59e0b" stroke="#b45309" stroke-width="2"/></svg>' },
+  { id: 'rhombus',       name: 'لوزی',          color: '#8b5cf6', svg: '<svg width="36" height="36" viewBox="0 0 36 36"><polygon points="18,3 33,18 18,33 3,18" fill="#8b5cf6" stroke="#5b21b6" stroke-width="2"/></svg>' },
+  { id: 'trapezoid',     name: 'ذوزنقه',        color: '#14b8a6', svg: '<svg width="36" height="36" viewBox="0 0 36 36"><polygon points="5,28 31,28 26,8 10,8" fill="#14b8a6" stroke="#0f766e" stroke-width="2"/></svg>' },
+  { id: 'circle',        name: 'دایره',         color: '#ec4899', svg: '<svg width="36" height="36" viewBox="0 0 36 36"><circle cx="18" cy="18" r="14" fill="#ec4899" stroke="#be185d" stroke-width="2"/></svg>' }
+];
+
+  // Load Best Score from localStorage
+  function loadBestScore() {
+    try {
+      var saved = localStorage.getItem('geometry_hero_best_score');
+      if (saved !== null) {
+        var val = parseInt(saved, 10);
+        if (!isNaN(val)) {
+          elBestScoreBanner.textContent = '🌟 بالاترین رکورد ثبت‌شده در این دستگاه: ' + toPersianDigits(val) + ' امتیاز';
+          elBestScoreBanner.style.display = 'block';
+        }
+      }
+    } catch (e) {
+      // ignore
+    }
+  }
+  loadBestScore();
+
+  function saveBestScore(score) {
+    try {
+      var saved = localStorage.getItem('geometry_hero_best_score');
+      var prev = saved ? parseInt(saved, 10) : 0;
+      if (isNaN(prev) || score > prev) {
+        localStorage.setItem('geometry_hero_best_score', score.toString());
+      }
+    } catch (e) {
+      // ignore
+    }
+  }
+
+  // Persian Number Helpers
+  function toPersianDigits(n) {
+  if (n === null || n === undefined) return '';
+  var str = n.toString();
+  var faDigits = ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹'];
+  str = str.replace(/[0-9]/g, function(d) {
+    return faDigits[parseInt(d, 10)];
+  });
+  return str.replace(/\./g, '/');
+}
+
+  // Render a symbolic formula, then substitution/result on a separate LTR line.
+  // Isolate labels, numbers and operators so the RTL page cannot reverse math.
+  function appendMathTokens(parent, text) {
+    var tokens = text.match(/[\p{L}][\p{L}\p{N}\u200c ]*|[۰-۹٠-٩0-9]+(?:[/.٫][۰-۹٠-٩0-9]+)*|[^\s]/gu) || [];
+    tokens.forEach(function(token, index) {
+      if (index) parent.appendChild(document.createTextNode(' '));
+      var span = document.createElement('bdi');
+      span.dir = /^\p{L}/u.test(token) ? 'rtl' : 'ltr';
+      span.textContent = token.trim();
+      if (/^[=+×÷−-]$/.test(token.trim())) span.className = 'math-operator';
+      parent.appendChild(span);
+    });
+  }
+
+  // Equality segments contain at most one division; decimal slashes stay numeric.
+  function appendMathExpression(row, line) {
+    line.split(' = ').forEach(function(segment, index) {
+      if (index) appendMathTokens(row, ' = ');
+      var division = segment.split(' ÷ ');
+      if (division.length === 2) {
+        var fraction = document.createElement('span');
+        fraction.className = 'math-fraction';
+        fraction.dir = 'ltr';
+        fraction.setAttribute('role', 'math');
+        fraction.setAttribute('aria-label', division[0] + ' تقسیم بر ' + division[1]);
+        ['math-numerator', 'math-denominator'].forEach(function(className, part) {
+          var cell = document.createElement('span');
+          cell.className = className;
+          appendMathTokens(cell, division[part]);
+          fraction.appendChild(cell);
+        });
+        row.appendChild(fraction);
+      } else {
+        appendMathTokens(row, segment);
+      }
+    });
+  }
+
+  function formatMathSteps(text) {
+    var wrapper = document.createElement('div');
+    wrapper.className = 'math-steps';
+    var noteIndex = text.indexOf(' (توجه:');
+    var note = noteIndex >= 0 ? text.slice(noteIndex).trim() : '';
+    var expression = noteIndex >= 0 ? text.slice(0, noteIndex) : text;
+    var parts = expression.split(' = ');
+    var lines = [parts.slice(0, 2).join(' = ')];
+    if (parts.length > 2) lines.push(parts.slice(2).join(' = '));
+    lines.forEach(function(line) {
+      var row = document.createElement('div');
+      row.className = 'math-line';
+      row.dir = 'ltr';
+      appendMathExpression(row, line);
+      wrapper.appendChild(row);
+    });
+    if (note) {
+      var noteElement = document.createElement('div');
+      noteElement.className = 'math-note';
+      noteElement.textContent = note;
+      wrapper.appendChild(noteElement);
+    }
+    return wrapper.outerHTML;
+  }
+
+  // Strict Number Parser supporting Persian/Arabic digits, '.', '٫', ',', '/'
+  function parsePersianNumber(inputStr) {
+    if (typeof inputStr !== 'string') return null;
+    var raw = inputStr.trim();
+    if (!raw) return null;
+
+    // Convert Arabic and Persian digits to Western ASCII
+    var converted = '';
+    for (var i = 0; i < raw.length; i++) {
+      var ch = raw[i];
+      var code = raw.charCodeAt(i);
+      if (code >= 0x0660 && code <= 0x0669) {
+        converted += String.fromCharCode(code - 0x0660 + 48);
+      } else if (code >= 0x06F0 && code <= 0x06F9) {
+        converted += String.fromCharCode(code - 0x06F0 + 48);
+      } else if (ch === '٫' || ch === ',' || ch === '/') {
+        converted += '.';
+      } else {
+        converted += ch;
+      }
+    }
+
+    converted = converted.trim();
+    // Validate that converted string is strictly a valid decimal number
+    // Reject invalid strings like "12abc", "1.2.3", "++3", etc.
+    if (!/^-?\d+(\.\d+)?$/.test(converted)) {
+      return null;
+    }
+
+    var num = parseFloat(converted);
+    if (isNaN(num) || !isFinite(num)) return null;
+    return num;
+  }
+
+  // Avatar Selection Listener
+  var avatarOptions = document.querySelectorAll('.avatar-option');
+  avatarOptions.forEach(function(opt) {
+    opt.addEventListener('click', function() {
+      avatarOptions.forEach(function(o) {
+        o.classList.remove('selected');
+        o.setAttribute('aria-checked', 'false');
+      });
+      opt.classList.add('selected');
+      opt.setAttribute('aria-checked', 'true');
+      state.avatar = opt.getAttribute('data-avatar') || '🧙‍♂️';
+      state.avatarName = opt.getAttribute('data-name') || 'قهرمان';
+      playMysteriousClick();
+    });
+    opt.addEventListener('keydown', function(e) {
+      if (e.key === ' ' || e.key === 'Enter') {
+        e.preventDefault();
+        opt.click();
+      }
+    });
+  });
+
+  var elVolumeSlider = document.getElementById('volumeSlider');
+  var elVolumeValue = document.getElementById('volumeValue');
+  function updateVolume() {
+    var percent = Math.round(state.volume * 100);
+    elVolumeValue.textContent = toPersianDigits(percent) + '٪';
+    elVolumeSlider.setAttribute('aria-valuetext', toPersianDigits(percent) + ' درصد');
+    elAudioToggleBtn.setAttribute('aria-pressed', String(state.audioEnabled));
+    if (elBgMusic) {
+      elBgMusic.volume = state.volume;
+      elBgMusic.muted = !state.audioEnabled;
+    }
+    if (masterGain) masterGain.gain.setValueAtTime(state.audioEnabled ? state.volume : 0, audioCtx.currentTime);
+  }
+  elVolumeSlider.addEventListener('input', function() {
+    state.volume = Number(elVolumeSlider.value) / 100;
+    updateVolume();
+  });
+  updateVolume();
+
+  // Audio Toggle Button
+  elAudioToggleBtn.addEventListener('click', function() {
+  state.audioEnabled = !state.audioEnabled;
+  updateVolume();
+
+  if (state.audioEnabled) {
+    elAudioIcon.textContent = '🔊';
+    elAudioText.textContent = 'صدا: روشن';
+
+    // فقط اگر بازی شروع شده باشد، آهنگ را پخش کن
+    if (elBgMusic && !elGameScreen.classList.contains('hidden')) {
+      elBgMusic.volume = state.volume;
+      elBgMusic.play().catch(() => {});
+    }
+
+  } else {
+    elAudioIcon.textContent = '🔇';
+    elAudioText.textContent = 'صدا: خاموش';
+
+    if (elBgMusic) {
+      elBgMusic.pause();
+    }
+  }
+});
+
+  // Start Adventure Button & Input Validation
+  document.getElementById('startForm').addEventListener('submit', function(event) {
+    event.preventDefault();
+    var fullName = elFullName.value.trim();
+    var classNumber = elClassNumber.value.trim();
+
+    if (!fullName || !classNumber) {
+      elStartValidationMsg.textContent = '⚠️ لطفاً هر دو بخش «نام و نام خانوادگی قهرمان» و «شماره کلاس» را تکمیل کنید تا ماجراجویی آغاز شود!';
+      elStartValidationMsg.style.display = 'block';
+      if (!fullName) elFullName.focus();
+      else elClassNumber.focus();
+      return;
+    }
+
+    elStartValidationMsg.style.display = 'none';
+    state.fullName = fullName;
+    state.classNumber = classNumber;
+    state.isTimed = elTimerCheckbox.checked;
+
+    startNewGame();
+  });
+  // مثلث‌های استاندارد: اضلاع طبیعی، ارتفاع طبیعی، مساحت صحیح
+  // type: 'right' = قائم‌الزاویه (ساق قائم = ارتفاع)، 'isosceles' = متساوی‌الساقین
+  var triangleConfigs = [
+    { s1: 3,  s2: 4,  s3: 5,  base: 4,  h: 3,  type: 'right' },
+    { s1: 6,  s2: 8,  s3: 10, base: 8,  h: 6,  type: 'right' },
+    { s1: 5,  s2: 12, s3: 13, base: 12, h: 5,  type: 'right' },
+    { s1: 9,  s2: 12, s3: 15, base: 12, h: 9,  type: 'right' },
+    { s1: 8,  s2: 15, s3: 17, base: 15, h: 8,  type: 'right' },
+    { s1: 5,  s2: 6,  s3: 5,  base: 6,  h: 4,  type: 'isosceles' },
+    { s1: 5,  s2: 8,  s3: 5,  base: 8,  h: 3,  type: 'isosceles' },
+    { s1: 10, s2: 12, s3: 10, base: 12, h: 8,  type: 'isosceles' },
+    { s1: 13, s2: 10, s3: 13, base: 10, h: 12, type: 'isosceles' },
+    { s1: 15, s2: 18, s3: 15, base: 18, h: 12, type: 'isosceles' }
+    ];
+
+  var rhombusConfigs = [
+    { side: 2.5, d1: 3,  d2: 4  },   // مساحت ۶
+    { side: 5,   d1: 6,  d2: 8  },   // مساحت ۲۴
+    { side: 6.5, d1: 5,  d2: 12 },   // مساحت ۳۰
+    { side: 7.5, d1: 9,  d2: 12 },   // مساحت ۵۴
+    { side: 13,  d1: 10, d2: 24 }    // مساحت ۱۲۰
+  ];
+
+const trapezoidCases = [
+  { base1: 14, base2: 6,  height: 3, leg: 5 }, // مساحت ۳۰
+  { base1: 15, base2: 7,  height: 3, leg: 5 }, // مساحت ۳۳
+  { base1: 16, base2: 8,  height: 3, leg: 5 }, // مساحت ۳۶
+  { base1: 17, base2: 9,  height: 3, leg: 5 }, // مساحت ۳۹
+  { base1: 18, base2: 10, height: 3, leg: 5 }, // مساحت ۴۲
+  { base1: 19, base2: 11, height: 3, leg: 5 }, // مساحت ۴۵
+  { base1: 20, base2: 12, height: 3, leg: 5 }, // مساحت ۴۸
+  { base1: 21, base2: 13, height: 3, leg: 5 }, // مساحت ۵۱
+  { base1: 22, base2: 14, height: 3, leg: 5 }, // مساحت ۵۴
+  { base1: 23, base2: 15, height: 3, leg: 5 }  // مساحت ۵۷
+];
+
+  // Generate Questions Set
+  function generateGameQuestions() {
+    var shapes = [
+      { id: 'square', name: 'مربع', icon: '🟥' },
+      { id: 'rectangle', name: 'مستطیل', icon: '🟦' },
+      { id: 'parallelogram', name: 'متوازی‌الاضلاع', icon: '▱' },
+      { id: 'triangle', name: 'مثلث', icon: '🔺' },
+      { id: 'rhombus', name: 'لوزی', icon: '🔷' },
+      { id: 'trapezoid', name: 'ذوزنقه', icon: '⬟' },
+      { id: 'circle', name: 'دایره', icon: '🔵' }
+    ];
+
+    var allQuestions = [];
+
+    shapes.forEach(function(s) {
+      // numeric k random 1..4
+      var k = Math.floor(Math.random() * 4) + 1;
+      var shapeQuestions = [];
+
+                  if (s.id === 'square') {
+        var side = Math.floor(Math.random() * 10) + 2; // ۲ تا ۱۱
+        var pAns = 4 * side;
+        var aAns = side * side;
+
+        shapeQuestions.push({
+          shapeId: s.id,
+          shapeName: s.name,
+          type: 'perimeter',
+          k: k,
+          prompt: 'محیط مربعی به طول ضلع ' + toPersianDigits(side) + ' سانتی‌متر را به دست آورید.',
+          hint: 'فرمول محیط مربع = یک ضلع × ۴ = ' + toPersianDigits(side) + ' × ۴',
+          solution: 'محیط مربع = یک ضلع × ۴ = ' + toPersianDigits(side) + ' × ۴ = ' + toPersianDigits(pAns) + ' سانتی‌متر',
+          expectedAnswer: pAns,
+          tolerance: 0.001,
+          svg: generateSvgSquare(side)
+        });
+
+        shapeQuestions.push({
+          shapeId: s.id,
+          shapeName: s.name,
+          type: 'area',
+          k: k,
+          prompt: 'مساحت مربعی به طول ضلع ' + toPersianDigits(side) + ' سانتی‌متر را محاسبه کنید.',
+          hint: 'فرمول مساحت مربع = یک ضلع × خودش = ' + toPersianDigits(side) + ' × ' + toPersianDigits(side),
+          solution: 'مساحت مربع = یک ضلع × خودش = ' + toPersianDigits(side) + ' × ' + toPersianDigits(side) + ' = ' + toPersianDigits(aAns) + ' سانتی‌متر مربع',
+          expectedAnswer: aAns,
+          tolerance: 0.001,
+          svg: generateSvgSquare(side)
+        });
+      }
+
+      else if (s.id === 'rectangle') {
+        var length = Math.floor(Math.random() * 5) + 7; // ۷ تا ۱۱
+        var width = Math.floor(Math.random() * (length - 2)) + 2; // ۲ تا (طول-۱)
+        var pAns = 2 * (length + width);
+        var aAns = length * width;
+
+        shapeQuestions.push({
+          shapeId: s.id,
+          shapeName: s.name,
+          type: 'perimeter',
+          k: k,
+          prompt: 'محیط مستطیلی به طول ' + toPersianDigits(length) + ' سانتی‌متر و عرض ' + toPersianDigits(width) + ' سانتی‌متر را به دست آورید.',
+          hint: 'فرمول محیط مستطیل = (طول + عرض) × ۲ = (' + toPersianDigits(length) + ' + ' + toPersianDigits(width) + ') × ۲',
+          solution: 'محیط مستطیل = (طول + عرض) × ۲ = (' + toPersianDigits(length) + ' + ' + toPersianDigits(width) + ') × ۲ = ' + toPersianDigits(length + width) + ' × ۲ = ' + toPersianDigits(pAns) + ' سانتی‌متر',
+          expectedAnswer: pAns,
+          tolerance: 0.001,
+          svg: generateSvgRectangle(length, width)
+        });
+
+        shapeQuestions.push({
+          shapeId: s.id,
+          shapeName: s.name,
+          type: 'area',
+          k: k,
+          prompt: 'مساحت مستطیلی به طول ' + toPersianDigits(length) + ' سانتی‌متر و عرض ' + toPersianDigits(width) + ' سانتی‌متر را به دست آورید.',
+          hint: 'فرمول مساحت مستطیل = طول × عرض = ' + toPersianDigits(length) + ' × ' + toPersianDigits(width),
+          solution: 'مساحت مستطیل = طول × عرض = ' + toPersianDigits(length) + ' × ' + toPersianDigits(width) + ' = ' + toPersianDigits(aAns) + ' سانتی‌متر مربع',
+          expectedAnswer: aAns,
+          tolerance: 0.001,
+          svg: generateSvgRectangle(length, width)
+        });
+      }
+            else if (s.id === 'parallelogram') {
+        var base = Math.floor(Math.random() * 6) + 6;       // ۶ تا ۱۱
+        var slantSide = Math.floor(Math.random() * 5) + 5;  // ۵ تا ۹
+        var height = Math.floor(Math.random() * (slantSide - 2)) + 2; // ۲ تا (ضلع جانبی-۱)
+        var pAns = 2 * (base + slantSide);
+        var aAns = base * height;
+
+          shapeQuestions.push({
+          shapeId: s.id,
+          shapeName: s.name,
+          type: 'perimeter',
+          k: k,
+          prompt: 'محیط متوازی‌الاضلاعی با طول قاعده ' + toPersianDigits(base) + ' سانتی‌متر و طول ضلع مجاور (مایل) ' + toPersianDigits(slantSide) + ' سانتی‌متر را به دست آورید.',
+          hint: 'فرمول محیط متوازی‌الاضلاع = مجموع دو ضلع مجاور × ۲ = (' + toPersianDigits(base) + ' + ' + toPersianDigits(slantSide) + ') × ۲ (توجه: ارتفاع برای مساحت است، نه محیط)',
+          solution: 'محیط متوازی‌الاضلاع = (قاعده + ضلع مایل) × ۲ = (' + toPersianDigits(base) + ' + ' + toPersianDigits(slantSide) + ') × ۲ = ' + toPersianDigits(base + slantSide) + ' × ۲ = ' + toPersianDigits(pAns) + ' سانتی‌متر',
+          expectedAnswer: pAns,
+          tolerance: 0.001,
+          svg: generateSvgParallelogram(base, slantSide, height)
+        });
+
+        shapeQuestions.push({
+          shapeId: s.id,
+          shapeName: s.name,
+          type: 'area',
+          k: k,
+          prompt: 'مساحت متوازی‌الاضلاعی با طول قاعده ' + toPersianDigits(base) + ' سانتی‌متر و ارتفاع نظیر ' + toPersianDigits(height) + ' سانتی‌متر را محاسبه کنید.',
+          hint: 'فرمول مساحت متوازی‌الاضلاع = قاعده × ارتفاع نظیر = ' + toPersianDigits(base) + ' × ' + toPersianDigits(height),
+          solution: 'مساحت متوازی‌الاضلاع = قاعده × ارتفاع = ' + toPersianDigits(base) + ' × ' + toPersianDigits(height) + ' = ' + toPersianDigits(aAns) + ' سانتی‌متر مربع',
+          expectedAnswer: aAns,
+          tolerance: 0.001,
+          svg: generateSvgParallelogram(base, slantSide, height)
+        });
+      }
+
+                  else if (s.id === 'triangle') {
+        var tri = triangleConfigs[Math.floor(Math.random() * triangleConfigs.length)];
+        var s1 = tri.s1;
+        var s2 = tri.s2; // قاعده
+        var s3 = tri.s3;
+        var h = tri.h;
+        var pAns = s1 + s2 + s3;
+        var aAns = (s2 * h) / 2;
+        var typeName = (tri.type === 'right') ? 'قائم‌الزاویه‌ای' : 'متساوی‌الساقینی';
+
+        shapeQuestions.push({
+          shapeId: s.id,
+          shapeName: s.name,
+          type: 'perimeter',
+          k: k,
+          prompt: 'محیط مثلث ' + typeName + ' با طول اضلاع ' + toPersianDigits(s1) + '، ' + toPersianDigits(s2) + ' و ' + toPersianDigits(s3) + ' سانتی‌متر را بیابید.',
+          hint: 'فرمول محیط مثلث = مجموع طول هر سه ضلع = ' + toPersianDigits(s1) + ' + ' + toPersianDigits(s2) + ' + ' + toPersianDigits(s3),
+          solution: 'محیط مثلث = مجموع سه ضلع = ' + toPersianDigits(s1) + ' + ' + toPersianDigits(s2) + ' + ' + toPersianDigits(s3) + ' = ' + toPersianDigits(pAns) + ' سانتی‌متر',
+          expectedAnswer: pAns,
+          tolerance: 0.001,
+          svg: generateSvgTriangle(s1, s2, s3, h, tri.type)
+        });
+
+        shapeQuestions.push({
+          shapeId: s.id,
+          shapeName: s.name,
+          type: 'area',
+          k: k,
+          prompt: 'مساحت مثلث ' + typeName + ' با طول قاعده ' + toPersianDigits(s2) + ' سانتی‌متر و ارتفاع نظیر ' + toPersianDigits(h) + ' سانتی‌متر را به دست آورید.',
+          hint: 'فرمول مساحت مثلث = (قاعده × ارتفاع نظیر) ÷ ۲ = (' + toPersianDigits(s2) + ' × ' + toPersianDigits(h) + ') ÷ ۲',
+          solution: 'مساحت مثلث = (قاعده × ارتفاع) ÷ ۲ = (' + toPersianDigits(s2) + ' × ' + toPersianDigits(h) + ') ÷ ۲ = ' + toPersianDigits(s2 * h) + ' ÷ ۲ = ' + toPersianDigits(aAns) + ' سانتی‌متر مربع',
+          expectedAnswer: aAns,
+          tolerance: 0.001,
+          svg: generateSvgTriangle(s1, s2, s3, h, tri.type)
+        });
+      }
+
+        else if (s.id === 'rhombus') {
+        var rho = rhombusConfigs[Math.floor(Math.random() * rhombusConfigs.length)];
+        var side = rho.side;
+        var d1 = rho.d1;
+        var d2 = rho.d2;
+        var pAns = 4 * side;
+        var aAns = (d1 * d2) / 2;
+
+        shapeQuestions.push({
+          shapeId: s.id,
+          shapeName: s.name,
+          type: 'perimeter',
+          k: k,
+          prompt: 'محیط لوزی به طول ضلع ' + toPersianDigits(side) + ' سانتی‌متر را به دست آورید.',
+          hint: 'فرمول محیط لوزی = یک ضلع × ۴ = ' + toPersianDigits(side) + ' × ۴',
+          solution: 'محیط لوزی = یک ضلع × ۴ = ' + toPersianDigits(side) + ' × ۴ = ' + toPersianDigits(pAns) + ' سانتی‌متر',
+          expectedAnswer: pAns,
+          tolerance: 0.001,
+          svg: generateSvgRhombus(side, d1, d2)
+        });
+
+        shapeQuestions.push({
+          shapeId: s.id,
+          shapeName: s.name,
+          type: 'area',
+          k: k,
+          prompt: 'مساحت لوزی با قطرهای ' + toPersianDigits(d1) + ' سانتی‌متر و ' + toPersianDigits(d2) + ' سانتی‌متر را محاسبه کنید.',
+          hint: 'فرمول مساحت لوزی = (قطر بزرگ × قطر کوچک) ÷ ۲ = (' + toPersianDigits(d2) + ' × ' + toPersianDigits(d1) + ') ÷ ۲',
+          solution: 'مساحت لوزی = (قطر بزرگ × قطر کوچک) ÷ ۲ = (' + toPersianDigits(d2) + ' × ' + toPersianDigits(d1) + ') ÷ ۲ = ' + toPersianDigits(d1 * d2) + ' ÷ ۲ = ' + toPersianDigits(aAns) + ' سانتی‌متر مربع',
+          expectedAnswer: aAns,
+          tolerance: 0.001,
+          svg: generateSvgRhombus(side, d1, d2)
+        });
+      }
+      else if (s.id === 'trapezoid') {
+      const t = trapezoidCases[Math.floor(Math.random() * trapezoidCases.length)];
+      const baseBig = t.base1;
+      const baseSmall = t.base2;
+      const leg1 = t.leg;
+      const leg2 = t.leg;
+      const height = t.height;
+      pAns = baseBig + baseSmall + leg1 + leg2;
+      aAns = ((baseBig + baseSmall) * height) / 2;
+
+        shapeQuestions.push({
+          shapeId: s.id,
+          shapeName: s.name,
+          type: 'perimeter',
+          k: k,
+          prompt: 'محیط ذوزنقه‌ای متساوی‌الساقین با قاعده‌های ' + toPersianDigits(baseBig) + ' و ' + toPersianDigits(baseSmall) + ' سانتی‌متر و ساق‌های ' + toPersianDigits(leg1) + ' و ' + toPersianDigits(leg2) + ' سانتی‌متر را به دست آورید.',
+          hint: 'فرمول محیط ذوزنقه = مجموع طول هر ۴ ضلع = ' + toPersianDigits(baseBig) + ' + ' + toPersianDigits(baseSmall) + ' + ' + toPersianDigits(leg1) + ' + ' + toPersianDigits(leg2),
+          solution: 'محیط ذوزنقه = مجموع چهار ضلع = ' + toPersianDigits(baseBig) + ' + ' + toPersianDigits(baseSmall) + ' + ' + toPersianDigits(leg1) + ' + ' + toPersianDigits(leg2) + ' = ' + toPersianDigits(pAns) + ' سانتی‌متر',
+          expectedAnswer: pAns,
+          tolerance: 0.001,
+          svg: generateSvgTrapezoid(baseBig, baseSmall, leg1, height)
+        });
+
+        shapeQuestions.push({
+          shapeId: s.id,
+          shapeName: s.name,
+          type: 'area',
+          k: k,
+          prompt: 'مساحت ذوزنقه‌ای با قاعده‌های ' + toPersianDigits(baseBig) + ' و ' + toPersianDigits(baseSmall) + ' سانتی‌متر و ارتفاع ' + toPersianDigits(height) + ' سانتی‌متر را محاسبه کنید.',
+          hint: 'فرمول مساحت ذوزنقه = ((مجموع دو قاعده) × ارتفاع) ÷ ۲ = ((' + toPersianDigits(baseBig) + ' + ' + toPersianDigits(baseSmall) + ') × ' + toPersianDigits(height) + ') ÷ ۲',
+          solution: 'مساحت ذوزنقه = ((قاعده بزرگ + قاعده کوچک) × ارتفاع) ÷ ۲ = ((' + toPersianDigits(baseBig) + ' + ' + toPersianDigits(baseSmall) + ') × ' + toPersianDigits(height) + ') ÷ ۲ = (' + toPersianDigits(baseBig + baseSmall) + ' × ' + toPersianDigits(height) + ') ÷ ۲ = ' + toPersianDigits((baseBig + baseSmall) * height) + ' ÷ ۲ = ' + toPersianDigits(aAns) + ' سانتی‌متر مربع',
+          expectedAnswer: aAns,
+          tolerance: 0.001,
+          svg: generateSvgTrapezoid(baseBig, baseSmall, leg1, height)
+        });
+      }
+        else if (s.id === 'circle') {
+        var radii = [1, 2, 3, 4, 5, 10];
+        var r = radii[Math.floor(Math.random() * radii.length)];
+        var pi = 3;
+        var pAns = parseFloat((2 * pi * r).toFixed(2));
+        var aAns = parseFloat((pi * r * r).toFixed(2));
+
+        shapeQuestions.push({
+          shapeId: s.id,
+          shapeName: s.name,
+          type: 'perimeter',
+          k: k,
+          prompt: 'محیط دایره‌ای به شعاع ' + toPersianDigits(r) + ' سانتی‌متر را با در نظر گرفتن عدد پی مساوی ۳ بیابید.',
+          hint: 'فرمول محیط دایره = شعاع × ۲ × عدد پی = ' + toPersianDigits(r) + ' × ۲ × ۳',
+          solution: 'محیط دایره = شعاع × ۲ × عدد پی = ' + toPersianDigits(r) + ' × ۲ × ۳ = ' + toPersianDigits(pAns) + ' سانتی‌متر',
+          expectedAnswer: pAns,
+          tolerance: 0.001,
+          svg: generateSvgCircle(r)
+        });
+
+        shapeQuestions.push({
+          shapeId: s.id,
+          shapeName: s.name,
+          type: 'area',
+          k: k,
+          prompt: 'مساحت دایره‌ای به شعاع ' + toPersianDigits(r) + ' سانتی‌متر را با در نظر گرفتن عدد پی مساوی ۳ بیابید.',
+          hint: 'فرمول مساحت دایره = شعاع × شعاع × عدد پی = ' + toPersianDigits(r) + ' × ' + toPersianDigits(r) + ' × ۳',
+          solution: 'مساحت دایره = شعاع × شعاع × عدد پی = ' + toPersianDigits(r) + ' × ' + toPersianDigits(r) + ' × ۳ = ' + toPersianDigits(aAns) + ' سانتی‌متر مربع',
+          expectedAnswer: aAns,
+          tolerance: 0.001,
+          svg: generateSvgCircle(r)
+        });
+      }
+
+      // Shuffle perimeter and area pair order
+      if (Math.random() > 0.5) {
+        shapeQuestions.reverse();
+      }
+
+      allQuestions = allQuestions.concat(shapeQuestions);
+    });
+
+    return allQuestions;
+  }
+
+  // SVG Diagram Generators
+  // ==================== SVG Diagram Generators (بهبود یافته) ====================
+
+function generateSvgSquare(side) {
+  var sFa = toPersianDigits(side);
+  return '<svg viewBox="0 0 400 260" width="400" height="260" aria-label="مربع">' +
+    '<rect x="100" y="40" width="200" height="200" fill="#f0f9ff" stroke="#ef4444" stroke-width="4" rx="6"/>' +
+    '<text x="200" y="25" text-anchor="middle" font-size="20" font-weight="bold" fill="#0f172a">' + sFa + '</text>' +
+  '</svg>';
+}
+
+function generateSvgRectangle(length, width) {
+  var lFa = toPersianDigits(length);
+  var wFa = toPersianDigits(width);
+  return '<svg viewBox="0 0 420 240" width="420" height="240" aria-label="مستطیل">' +
+    '<rect x="60" y="50" width="300" height="140" fill="#f0fdf4" stroke="#3b82f6" stroke-width="4" rx="6"/>' +
+    '<text x="210" y="35" text-anchor="middle" font-size="18" font-weight="bold" fill="#0f172a">طول: ' + lFa + '</text>' +
+    '<text x="30" y="125" text-anchor="middle" font-size="18" font-weight="bold" fill="#0f172a">عرض: ' + wFa + '</text>' +
+  '</svg>';
+}
+
+function generateSvgParallelogram(base, slantSide, height) {
+  var bFa = toPersianDigits(base);
+  var sFa = toPersianDigits(slantSide);
+  var hFa = toPersianDigits(height);
+
+  return '<svg viewBox="0 0 440 260" width="440" height="260" aria-label="متوازی‌الاضلاع">' +
+    '<polygon points="90,200 350,200 390,70 130,70" fill="#fffbeb" stroke="#f97316" stroke-width="4" stroke-linejoin="round"/>' +
+
+    '<line x1="130" y1="70" x2="130" y2="200" stroke="#dc2626" stroke-width="3" stroke-dasharray="8,5"/>' +
+
+    '<text x="220" y="236" text-anchor="middle" font-size="19" font-weight="bold" fill="#0f172a">قاعده: ' + bFa + '</text>' +
+
+    '<text x="48" y="125" text-anchor="middle" font-size="18" font-weight="bold" fill="#0f172a">ضلع جانبی: ' + sFa + '</text>' +
+
+    '<text x="186" y="132" text-anchor="middle" font-size="19" font-weight="bold" fill="#dc2626">ارتفاع: ' + hFa + '</text>' +
+  '</svg>';
+}
+
+function generateSvgTriangle(s1, s2, s3, h, triType) {
+  var s1Fa = toPersianDigits(s1);
+  var s2Fa = toPersianDigits(s2);
+  var s3Fa = toPersianDigits(s3);
+  var hFa = toPersianDigits(h);
+  var type = triType || 'isosceles';
+
+  var padL = 80;
+  var padR = 80;
+  var padT = 36;
+  var padB = 52;
+  var maxW = 440 - padL - padR;
+  var maxH = 260 - padT - padB;
+  var scale = Math.min(maxW / s2, maxH / h);
+  var bw = s2 * scale;
+  var hh = h * scale;
+  var x0 = padL + (maxW - bw) / 2;
+  var y0 = 260 - padB;
+  var x1 = x0 + bw;
+  var yA = y0 - hh;
+  var xm = (x0 + x1) / 2;
+
+  var parts = [];
+  parts.push('<svg viewBox="0 0 440 260" width="440" height="260" aria-label="مثلث">');
+
+  if (type === 'right') {
+    var rs = Math.min(18, bw * 0.16, hh * 0.16);
+    parts.push('<polygon points="' + x0 + ',' + y0 + ' ' + x1 + ',' + y0 + ' ' + x0 + ',' + yA + '" fill="#fdf2f8" stroke="#f59e0b" stroke-width="4" stroke-linejoin="round"/>');
+    parts.push('<path d="M ' + x0 + ',' + (y0 - rs) + ' L ' + (x0 + rs) + ',' + (y0 - rs) + ' L ' + (x0 + rs) + ',' + y0 + '" fill="none" stroke="#7c3aed" stroke-width="2.5"/>');
+
+    parts.push('<text x="' + xm + '" y="' + (y0 + 28) + '" text-anchor="middle" font-size="19" font-weight="bold" fill="#0f172a">قاعده: ' + s2Fa + '</text>');
+    parts.push('<text x="' + (x0 - 10) + '" y="' + ((y0 + yA) / 2 + 6) + '" text-anchor="end" font-size="17" font-weight="bold" fill="#7c3aed">ارتفاع: ' + hFa + '</text>');
+    parts.push('<text x="' + ((x0 + x1) / 2 + 18) + '" y="' + ((y0 + yA) / 2) + '" text-anchor="middle" font-size="18" font-weight="bold" fill="#0f172a">' + s3Fa + '</text>');
+  } else {
+    parts.push('<polygon points="' + x0 + ',' + y0 + ' ' + x1 + ',' + y0 + ' ' + xm + ',' + yA + '" fill="#fdf2f8" stroke="#f59e0b" stroke-width="4" stroke-linejoin="round"/>');
+    parts.push('<line x1="' + xm + '" y1="' + yA + '" x2="' + xm + '" y2="' + y0 + '" stroke="#7c3aed" stroke-width="3" stroke-dasharray="8,5"/>');
+
+    var rs2 = Math.min(16, bw * 0.12, hh * 0.16);
+    parts.push('<path d="M ' + xm + ',' + (y0 - rs2) + ' L ' + (xm + rs2) + ',' + (y0 - rs2) + ' L ' + (xm + rs2) + ',' + y0 + '" fill="none" stroke="#7c3aed" stroke-width="2.5"/>');
+
+    var tickLen = 9;
+    var ldx = xm - x0;
+    var ldy = yA - y0;
+    var lLen = Math.sqrt(ldx * ldx + ldy * ldy) || 1;
+    var lmx = (x0 + xm) / 2;
+    var lmy = (y0 + yA) / 2;
+    var lpx = -ldy / lLen * tickLen;
+    var lpy = ldx / lLen * tickLen;
+    parts.push('<line x1="' + (lmx - lpx) + '" y1="' + (lmy - lpy) + '" x2="' + (lmx + lpx) + '" y2="' + (lmy + lpy) + '" stroke="#0f172a" stroke-width="3.5"/>');
+
+    var rdx = xm - x1;
+    var rdy = yA - y0;
+    var rLen = Math.sqrt(rdx * rdx + rdy * rdy) || 1;
+    var rmx = (x1 + xm) / 2;
+    var rmy = (y0 + yA) / 2;
+    var rpx = -rdy / rLen * tickLen;
+    var rpy = rdx / rLen * tickLen;
+    parts.push('<line x1="' + (rmx - rpx) + '" y1="' + (rmy - rpy) + '" x2="' + (rmx + rpx) + '" y2="' + (rmy + rpy) + '" stroke="#0f172a" stroke-width="3.5"/>');
+
+    parts.push('<text x="' + xm + '" y="' + (y0 + 28) + '" text-anchor="middle" font-size="19" font-weight="bold" fill="#0f172a">قاعده: ' + s2Fa + '</text>');
+    parts.push('<text x="' + (lmx - 14) + '" y="' + lmy + '" text-anchor="middle" font-size="18" font-weight="bold" fill="#0f172a">' + s1Fa + '</text>');
+    parts.push('<text x="' + (rmx + 14) + '" y="' + rmy + '" text-anchor="middle" font-size="18" font-weight="bold" fill="#0f172a">' + s3Fa + '</text>');
+    parts.push('<text x="' + (xm + 20) + '" y="' + ((yA + y0) / 2) + '" text-anchor="start" font-size="19" font-weight="bold" fill="#7c3aed">ارتفاع: ' + hFa + '</text>');
+  }
+
+  parts.push('</svg>');
+  return parts.join('');
+}
+
+function generateSvgRhombus(side, d1, d2) {
+  var sFa = toPersianDigits(side);
+  var d1Fa = toPersianDigits(d1);
+  var d2Fa = toPersianDigits(d2);
+  
+  return '<svg viewBox="0 0 420 260" width="420" height="260" aria-label="لوزی">' +
+
+    '<polygon points="210,30 370,130 210,230 50,130" fill="#eff6ff" stroke="#8b5cf6" stroke-width="4" stroke-linejoin="round"/>' +
+    
+    '<line x1="50" y1="130" x2="370" y2="130" stroke="#ea580c" stroke-width="3" stroke-dasharray="8,5"/>' +
+    
+    '<line x1="210" y1="30" x2="210" y2="230" stroke="#9333ea" stroke-width="3" stroke-dasharray="8,5"/>' +
+    
+    '<text x="135" y="68" text-anchor="middle" font-size="19" font-weight="bold" fill="#0f172a">' + sFa + '</text>' +
+    
+    '<text x="275" y="125" text-anchor="middle" font-size="18" font-weight="bold" fill="#ea580c">قطر بزرگ: ' + d2Fa + '</text>' +
+    
+    '<text x="145" y="155" text-anchor="middle" font-size="18" font-weight="bold" fill="#9333ea">قطر کوچک: ' + d1Fa + '</text>' +
+  '</svg>';
+}
+
+function generateSvgTrapezoid(baseBig, baseSmall, leg, height) {
+  var bBFa = toPersianDigits(baseBig);
+  var bSFa = toPersianDigits(baseSmall);
+  var lFa = toPersianDigits(leg);
+  var hFa = toPersianDigits(height);
+  
+  return '<svg viewBox="0 0 440 260" width="440" height="260" aria-label="ذوزنقه">' +
+    '<polygon points="50,210 390,210 320,70 120,70" fill="#ecfdf5" stroke="#14b8a6" stroke-width="4" stroke-linejoin="round"/>' +
+    
+    '<line x1="120" y1="70" x2="120" y2="210" stroke="#e11d48" stroke-width="3" stroke-dasharray="8,5"/>' +
+    
+    '<text x="220" y="245" text-anchor="middle" font-size="19" font-weight="bold" fill="#0f172a">قاعده بزرگ: ' + bBFa + '</text>' +
+    
+    '<text x="220" y="55" text-anchor="middle" font-size="18" font-weight="bold" fill="#0f172a">قاعده کوچک: ' + bSFa + '</text>' +
+    
+    '<text x="405" y="140" text-anchor="middle" font-size="18" font-weight="bold" fill="#0f172a">ساق: ' + lFa + '</text>' +
+    
+    '<text x="35" y="140" text-anchor="middle" font-size="18" font-weight="bold" fill="#0f172a">ساق: ' + lFa + '</text>' +
+    
+    '<text x="155" y="145" text-anchor="middle" font-size="19" font-weight="bold" fill="#e11d48">ارتفاع: ' + hFa + '</text>' +
+  '</svg>';
+}
+
+function generateSvgCircle(r) {
+  var rFa = toPersianDigits(r);
+  return '<svg viewBox="0 0 400 260" width="400" height="260" aria-label="دایره">' +
+    '<circle cx="200" cy="130" r="95" fill="#faf5ff" stroke="#ec4899" stroke-width="4"/>' +
+    '<circle cx="200" cy="130" r="5" fill="#7e22ce"/>' +
+    '<line x1="200" y1="130" x2="295" y2="130" stroke="#dc2626" stroke-width="3" stroke-dasharray="6,4"/>' +
+    '<text x="250" y="115" text-anchor="middle" font-size="18" font-weight="bold" fill="#dc2626">شعاع = ' + rFa + '</text>' +
+    '<text x="200" y="250" text-anchor="middle" font-size="22" font-weight="bold" fill="#1e2937">π = ۳</text>' +
+  '</svg>';
+}
+
+  // Island Map Render
+  function renderIslandMap() {
+  elIslandsContainer.innerHTML = '';
+  var currQ = state.questions[state.currentIndex];
+  var currentShapeId = currQ ? currQ.shapeId : '';
+
+  islandsInfo.forEach(function(isl, idx) {
+    var islandQuestions = state.results.filter(function(r) { return r.shapeId === isl.id; });
+    var totalForShape = state.questions.filter(function(q) { return q.shapeId === isl.id; }).length;
+
+    var correctCount = islandQuestions.filter(function(r) { return r.isCorrect === true; }).length;
+    var allAnswered = islandQuestions.length === totalForShape && totalForShape > 0;
+    var isDone = allAnswered && correctCount === totalForShape;
+    var isCurrent = (isl.id === currentShapeId);
+
+    var card = document.createElement('div');
+    card.className = 'island-card' + (isCurrent ? ' active' : '') + (isDone ? ' completed' : '');
+
+    var iconSpan = document.createElement('span');
+    iconSpan.className = 'island-icon';
+
+    var nameSpan = document.createElement('div');
+    nameSpan.className = 'island-name';
+    nameSpan.textContent = (idx + 1) + '. ' + isl.name;
+
+    var statusSpan = document.createElement('div');
+    statusSpan.className = 'island-status';
+
+    if (isDone) {
+      iconSpan.textContent = '⭐';
+      statusSpan.textContent = 'فتح شد';
+      statusSpan.className += ' conquered';
+    } else if (isCurrent) {
+      iconSpan.innerHTML = isl.svg;
+      statusSpan.textContent = '🔍 در حال کاوش';
+      statusSpan.className += ' exploring';
+    } else if (allAnswered) {
+      iconSpan.textContent = '⚠️';
+      statusSpan.textContent = 'نیازمند تمرین';
+      statusSpan.className += ' practice';
+    } else {
+      iconSpan.textContent = '🔒';
+      statusSpan.textContent = 'قفل';
+      statusSpan.className += ' locked';
+    }
+
+    card.appendChild(iconSpan);
+    card.appendChild(nameSpan);
+    card.appendChild(statusSpan);
+    elIslandsContainer.appendChild(card);
+  });
+}
+
+  // Timer Management
+  function startQuestionTimer() {
+    stopQuestionTimer();
+    if (!state.isTimed) {
+      elTimerDisplayBox.classList.add('hidden');
+      return;
+    }
+
+    elTimerDisplayBox.classList.remove('hidden');
+       state.timeRemaining = 30;
+    elTimerSeconds.textContent = toPersianDigits(state.timeRemaining);
+
+    state.timerInterval = setInterval(function() {
+      if (state.timerPaused) return;
+
+      state.timeRemaining--;
+      elTimerSeconds.textContent = toPersianDigits(state.timeRemaining);
+
+      if (state.timeRemaining <= 0) {
+        stopQuestionTimer();
+        handleTimeExpired();
+      }
+    }, 1000);
+  }
+
+  function stopQuestionTimer() {
+    if (state.timerInterval) {
+      clearInterval(state.timerInterval);
+      state.timerInterval = null;
+    }
+  }
+
+  // Visibility Change Handling (pause timer when tab hidden)
+  document.addEventListener('visibilitychange', function() {
+    if (document.hidden) {
+      state.timerPaused = true;
+    } else {
+      state.timerPaused = false;
+    }
+  });
+
+  function handleTimeExpired() {
+    if (state.questionResolved) return;
+    state.questionResolved = true;
+
+    showToast('⏰ زمان به پایان رسید', 'wrong');
+    elFeedbackContainer.className = 'feedback-box feedback-wrong';
+    elFeedbackContainer.innerHTML = '⏰ <strong>زمان شما به پایان رسید!</strong><br>' + formatMathSteps(state.questions[state.currentIndex].solution);
+    elFeedbackContainer.classList.remove('hidden');
+
+    state.results.push({
+      shapeId: state.questions[state.currentIndex].shapeId,
+      shapeName: state.questions[state.currentIndex].shapeName,
+      type: state.questions[state.currentIndex].type,
+      score: 0,
+      attempts: state.currentAttempt,
+      hintUsed: state.hintUsedForCurrent,
+      isCorrect: false,
+      reason: 'timeout'
+    });
+
+    elSubmitAnswerBtn.disabled = true;
+    elHintBtn.disabled = true;
+    elAnswerInput.disabled = true;
+    elNextQuestionBtn.disabled = false;
+    renderIslandMap();
+  }
+
+  // Start / Init New Game
+  function startNewGame() {
+    state.questions = generateGameQuestions();
+    state.currentIndex = 0;
+    state.score = 0;
+        state.results = [];
+    state.firstTryResults = [];
+    state.isRetryMode = false;
+
+// نمایش دوباره دکمه کپی گزارش عملکرد در شروع بازی جدید
+var pb = document.getElementById('printReportBtn');
+if (pb) pb.style.display = '';
+
+    elPlayerAvatarDisplay.textContent = state.avatar;
+    elPlayerNameDisplay.textContent = state.fullName;
+    elTotalQuestionsNum.textContent = toPersianDigits(state.questions.length);
+
+    elStartScreen.classList.add('hidden');
+    elReportScreen.classList.add('hidden');
+    elGameScreen.classList.remove('hidden');
+
+    renderQuestion();
+// پخش موسیقی پس‌زمینه
+    if (state.audioEnabled && elBgMusic) {
+    elBgMusic.volume = state.volume;
+    elBgMusic.currentTime = 0;
+    elBgMusic.play().catch(() => {});
+   }
+  }
+
+  // Render Current Question
+  function renderQuestion() {
+    var q = state.questions[state.currentIndex];
+    if (!q) {
+      showFinalReport();
+      return;
+    }
+
+    state.currentAttempt = 1;
+    state.hintUsedForCurrent = false;
+    state.questionResolved = false;
+
+    elCurrentQuestionNum.textContent = toPersianDigits(state.currentIndex + 1);
+    elCurrentScoreDisplay.textContent = toPersianDigits(state.score);
+    elIslandBadge.textContent = 'جزیره: ' + q.shapeName + ' (' + (q.type === 'perimeter' ? 'محیط' : 'مساحت') + ')';
+    elAttemptIndicator.textContent = 'تلاش ۱ از ۲ (۱۰۰ امتیاز)';
+    elAttemptIndicator.style.color = 'var(--gold-dark)';
+
+    elQuestionPromptText.textContent = q.prompt;
+    elDiagramContainer.innerHTML = q.svg;
+
+    elAnswerInput.value = '';
+    elAnswerInput.disabled = false;
+    elSubmitAnswerBtn.disabled = false;
+    elHintBtn.disabled = false;
+    elNextQuestionBtn.disabled = true;
+// تغییر متن دکمه در سوال آخر
+if (state.currentIndex === state.questions.length - 1) {
+  elNextQuestionBtn.textContent = 'مشاهده کارنامه 🏁';
+} else {
+  elNextQuestionBtn.textContent = 'سوال بعدی ➔';
+}
+
+    elHintContainer.classList.add('hidden');
+    elHintContainer.innerHTML = '';
+    elFeedbackContainer.classList.add('hidden');
+    elFeedbackContainer.innerHTML = '';
+
+    renderIslandMap();
+    startQuestionTimer();
+    elAnswerInput.focus();
+  }
+
+  // Hint Button Handler
+  elHintBtn.addEventListener('click', function() {
+    if (state.questionResolved) return;
+    state.hintUsedForCurrent = true;
+    var q = state.questions[state.currentIndex];
+    elHintContainer.innerHTML = '💡 <strong>راهنمایی:</strong> ' + formatMathSteps(q.hint) + '<br><small style="color:#7e22ce;">(نکته: در صورت استفاده از راهنمایی، حداکثر امتیاز سوال ۵۰ خواهد بود)</small>';
+    elHintContainer.classList.remove('hidden');
+    playMysteriousClick();
+  });
+
+  // Submit Answer Handler
+  function checkUserAnswer() {
+    if (state.questionResolved) return;
+
+    var inputVal = elAnswerInput.value;
+    var parsed = parsePersianNumber(inputVal);
+
+    if (parsed === null) {
+      elFeedbackContainer.className = 'feedback-box feedback-warning';
+      elFeedbackContainer.innerHTML = '⚠️ لطفاً یک مقدار عددی معتبر (انگلیسی یا فارسی) وارد کنید.';
+      elFeedbackContainer.classList.remove('hidden');
+      elAnswerInput.focus();
+      return;
+    }
+
+    var q = state.questions[state.currentIndex];
+    var isCorrect = Math.abs(parsed - q.expectedAnswer) <= q.tolerance;
+
+    if (isCorrect) {
+      stopQuestionTimer();
+      state.questionResolved = true;
+
+      var gained = 0;
+      if (state.hintUsedForCurrent) {
+        gained = 50;
+      } else if (state.currentAttempt === 1) {
+        gained = 100;
+      } else {
+        gained = 60;
+      }
+
+      state.score += gained;
+      elCurrentScoreDisplay.textContent = toPersianDigits(state.score);
+
+      showToast('🎉 آفرین! پاسخ درست است', 'correct');
+      triggerConfetti(false);
+
+      elFeedbackContainer.className = 'feedback-box feedback-correct';
+      elFeedbackContainer.innerHTML = '🎉 <strong>آفرین! پاسخ شما کاملاً درست است.</strong> (+' + toPersianDigits(gained) + ' امتیاز)<br>' + formatMathSteps(q.solution);
+      elFeedbackContainer.classList.remove('hidden');
+
+      state.results.push({
+  shapeId: q.shapeId,
+  shapeName: q.shapeName,
+  type: q.type,
+  score: gained,
+  attempts: state.currentAttempt,
+  hintUsed: state.hintUsedForCurrent,
+  isCorrect: true,
+  firstTryMastered: (state.currentAttempt === 1 && !state.hintUsedForCurrent),
+  secondTryMastered: (state.currentAttempt > 1 || state.hintUsedForCurrent)
+});
+
+      elSubmitAnswerBtn.disabled = true;
+      elHintBtn.disabled = true;
+      elAnswerInput.disabled = true;
+      elNextQuestionBtn.disabled = false;
+      renderIslandMap();
+
+    } else {
+      // Wrong answer
+      if (state.currentAttempt === 1) {
+        state.currentAttempt = 2;
+        
+        showToast('❌ پاسخ نادرست بود', 'wrong');
+        elAttemptIndicator.textContent = 'تلاش ۲ از ۲ (۶۰ امتیاز)';
+        elAttemptIndicator.style.color = 'var(--coral-dark)';
+
+        elFeedbackContainer.className = 'feedback-box feedback-warning';
+        elFeedbackContainer.innerHTML = '❌ <strong>پاسخ نادرست بود!</strong> نگران نباشید، یک شانس دیگر دارید. دوباره با دقت محاسبه کنید.';
+        elFeedbackContainer.classList.remove('hidden');
+        elAnswerInput.value = '';
+        elAnswerInput.focus();
+      } else {
+        // Failed after 2 attempts
+        stopQuestionTimer();
+        state.questionResolved = true;
+        
+        showToast('❌ پاسخ نادرست بود', 'wrong');
+
+        elFeedbackContainer.className = 'feedback-box feedback-wrong';
+        elFeedbackContainer.innerHTML = '❌ <strong>فرصت‌های این سوال تمام شد.</strong> (۰ امتیاز)<br>' + formatMathSteps(q.solution);
+        elFeedbackContainer.classList.remove('hidden');
+
+        state.results.push({
+          shapeId: q.shapeId,
+          shapeName: q.shapeName,
+          type: q.type,
+          score: 0,
+          attempts: 2,
+          hintUsed: state.hintUsedForCurrent,
+          isCorrect: false
+        });
+
+        elSubmitAnswerBtn.disabled = true;
+        elHintBtn.disabled = true;
+        elAnswerInput.disabled = true;
+        elNextQuestionBtn.disabled = false;
+        renderIslandMap();
+      }
+    }
+  }
+
+  elSubmitAnswerBtn.addEventListener('click', checkUserAnswer);
+  elAnswerInput.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      checkUserAnswer();
+    }
+  });
+
+  // Next Question Button
+  elNextQuestionBtn.addEventListener('click', function() {
+    state.currentIndex++;
+    if (state.currentIndex < state.questions.length) {
+      renderQuestion();
+    } else {
+      showFinalReport();
+    }
+  });
+
+  // Quit to Start
+  elQuitGameBtn.addEventListener('click', function() {
+    if (confirm('آیا مطمئن هستید که می‌خواهید به منوی اصلی برگردید؟ امتیاز بازی فعلی ذخیره نخواهد شد.')) {
+      stopQuestionTimer();
+      elGameScreen.classList.add('hidden');
+      elReportScreen.classList.add('hidden');
+      elStartScreen.classList.remove('hidden');
+    if (elBgMusic) {
+      elBgMusic.pause();
+      elBgMusic.currentTime = 0;
+    }
+      loadBestScore();
+    }
+  });
+
+  // The table, totals and copied report all use the latest result for each question.
+  function getReportResults() {
+    if (!state.isRetryMode) return state.results.slice();
+    return state.firstTryResults.map(function(first) {
+      return state.results.find(function(current) {
+        return current.shapeId === first.shapeId && current.type === first.type;
+      }) || first;
+    });
+  }
+
+  // Show Final Report
+  function showFinalReport() {
+    stopQuestionTimer();
+    var reportResults = getReportResults();
+    var reportScore = reportResults.reduce(function(total, result) { return total + result.score; }, 0);
+    saveBestScore(reportScore);
+
+    elGameScreen.classList.add('hidden');
+    elReportScreen.classList.remove('hidden');
+
+    var maxScore = reportResults.length * 100;
+    elFinalScoreVal.textContent = toPersianDigits(reportScore) + ' / ' + toPersianDigits(maxScore);
+
+    var firstTryCount = reportResults.filter(function(r) { return r.isCorrect && r.attempts === 1 && !r.hintUsed; }).length;
+    var hintsCount = reportResults.filter(function(r) { return r.hintUsed; }).length;
+
+    elFirstTryVal.textContent = toPersianDigits(firstTryCount);
+    elHintsUsedVal.textContent = toPersianDigits(hintsCount);
+
+    // Medal and Title evaluation
+    var pct = reportScore / maxScore;
+    var medal = '🥉';
+    var title = 'قهرمان برنزی هندسه!';
+    var subtext = 'تلاش بسیار خوبی بود! با کمی تمرین بیشتر به درجات بالاتر خواهید رسید.';
+
+    if (pct >= 0.85) {
+      medal = '🏆';
+      title = 'استاد اعظم و قهرمان طلایی هندسه!';
+      subtext = 'شاهکار کردید! تسلط شما بر تمام مفاهیم محیط و مساحت بی‌نظیر است.';
+      playMysteriousClick();
+      triggerConfetti(true);
+    } else if (pct >= 0.60) {
+      medal = '🥈';
+      title = 'قهرمان نقره‌ای هندسه!';
+      subtext = 'آفرین! دانش هندسی بسیار قدرتمندی دارید و عملکرد درخشانی به ثبت رساندید.';
+      playMysteriousClick();
+      triggerConfetti(false);
+    }
+
+    elReportMedal.textContent = medal;
+    // Safely set text content for player name & title
+    elReportTitle.textContent = title;
+    elReportSubtext.textContent = state.fullName + ' عزیز، ' + subtext;
+    elReportClassNumber.textContent = state.classNumber;
+
+    // Breakdown Table - نسخه جدید با ۳ وضعیت
+elBreakdownTableBody.innerHTML = '';
+var missedList = [];
+
+islandsInfo.forEach(function(isl) {
+  var firstP = (state.firstTryResults || []).find(function(r) { return r.shapeId === isl.id && r.type === 'perimeter'; });
+  var firstA = (state.firstTryResults || []).find(function(r) { return r.shapeId === isl.id && r.type === 'area'; });
+  var pRes = reportResults.find(function(r) { return r.shapeId === isl.id && r.type === 'perimeter'; });
+  var aRes = reportResults.find(function(r) { return r.shapeId === isl.id && r.type === 'area'; });
+
+  var tr = document.createElement('tr');
+
+  var tdShape = document.createElement('td');
+  tdShape.innerHTML = isl.svg + ' ' + isl.name;
+  tdShape.style.textAlign = 'right';
+  tdShape.style.verticalAlign = 'middle';
+
+  var tdP = document.createElement('td');
+  if (pRes) {
+    if (pRes.isCorrect) {
+      tdP.innerHTML = '<span class="badge-success">درست (+' + toPersianDigits(pRes.score) + ')</span>';
+    } else {
+      tdP.innerHTML = '<span class="badge-fail">نادرست (۰)</span>';
+      missedList.push(state.questions.find(function(q) { return q.shapeId === isl.id && q.type === 'perimeter'; }));
+    }
+  } else {
+    tdP.textContent = '-';
+  }
+
+  var tdA = document.createElement('td');
+  if (aRes) {
+    if (aRes.isCorrect) {
+      tdA.innerHTML = '<span class="badge-success">درست (+' + toPersianDigits(aRes.score) + ')</span>';
+    } else {
+      tdA.innerHTML = '<span class="badge-fail">نادرست (۰)</span>';
+      missedList.push(state.questions.find(function(q) { return q.shapeId === isl.id && q.type === 'area'; }));
+    }
+  } else {
+    tdA.textContent = '-';
+  }
+
+    // === بخش وضعیت (نسخه نهایی - گزارش بار اول و بار دوم) ===
+  var tdStatus = document.createElement('td');
+
+    if (state.isRetryMode) {
+    // گزارش بار دوم (تفصیلی)
+    var firstBothOk = firstP && firstA && firstP.isCorrect && firstA.isCorrect;
+    var nowBothOk = pRes && aRes && pRes.isCorrect && aRes.isCorrect;
+
+    if (nowBothOk) {
+      if (firstBothOk) {
+        tdStatus.innerHTML = '<span class="status-first">فتح کامل (دور اول)</span>';
+      } else {
+        tdStatus.innerHTML = '<span class="status-second">فتح کامل (دور دوم)</span>';
+      }
+    } else {
+      tdStatus.innerHTML = '<span class="status-need">نیازمند تمرین</span>';
+    }
+  } else {
+    // گزارش بار اول (ساده - بدون ذکر دور)
+    if (pRes && aRes && pRes.isCorrect && aRes.isCorrect) {
+      tdStatus.innerHTML = '<span class="status-first">⭐️ فتح کامل</span>';
+    } else {
+      tdStatus.innerHTML = '<span class="status-need">⚠️ نیازمند تمرین</span>';
+    }
+  }
+
+  tr.appendChild(tdShape);
+  tr.appendChild(tdP);
+  tr.appendChild(tdA);
+  tr.appendChild(tdStatus);
+  elBreakdownTableBody.appendChild(tr);
+});
+
+    // Missed questions retry button
+    var validMissed = missedList.filter(function(q) { return q !== undefined; });
+    if (validMissed.length > 0 && !state.isRetryMode) {
+      elRetryMissedBtn.classList.remove('hidden');
+      elRetryMissedBtn.onclick = function() {
+        state.isRetryMode = true;
+        state.questions = validMissed;
+        state.currentIndex = 0;
+        state.score = 0;
+        state.firstTryResults = state.results.slice(); // نتایج بار اول را نگه دار
+        state.results = []; // فقط نتایج بار دوم از نو ثبت می‌شوند
+        elTotalQuestionsNum.textContent = toPersianDigits(state.questions.length);
+        elReportScreen.classList.add('hidden');
+        elGameScreen.classList.remove('hidden');
+        renderQuestion();
+        hideCopyReportButton();
+      };
+    } else {
+      elRetryMissedBtn.classList.add('hidden');
+    }
+function hideCopyReportButton() {
+  var printBtn = document.getElementById('printReportBtn');
+  if (printBtn) {
+    printBtn.style.display = 'none';
+  }
+}
+
+  }
+
+  // Play Again Button
+  elPlayAgainBtn.addEventListener('click', function() {
+    elReportScreen.classList.add('hidden');
+    elStartScreen.classList.remove('hidden');
+    loadBestScore();
+  });
+
+  // Copy Report Button
+elPrintReportBtn.addEventListener('click', function() {
+  var reportText = generateReportText();
+  navigator.clipboard.writeText(reportText).then(function() {
+    showCopyNotification();
+  }).catch(function() {
+    // اگر مرورگر اجازه کپی نداد، از روش قدیمی استفاده می‌کنیم
+    var textarea = document.createElement('textarea');
+    textarea.value = reportText;
+    document.body.appendChild(textarea);
+    textarea.select();
+    document.execCommand('copy');
+    document.body.removeChild(textarea);
+    showCopyNotification();
+  });
+});
+
+  // Pure Canvas Confetti Animation
+  function triggerConfetti(isGrand) {
+    var canvas = document.getElementById('confetti-canvas');
+    if (!canvas) return;
+    var ctx = canvas.getContext('2d');
+    var width = canvas.width = canvas.offsetWidth;
+    var height = canvas.height = canvas.offsetHeight;
+
+    var count = isGrand ? 120 : 50;
+    var particles = [];
+    var colors = ['#0ea5e9', '#f59e0b', '#f43f5e', '#8b5cf6', '#10b981', '#ec4899'];
+
+    for (var i = 0; i < count; i++) {
+      particles.push({
+        x: Math.random() * width,
+        y: Math.random() * (height / 2),
+        size: Math.random() * 8 + 4,
+        color: colors[Math.floor(Math.random() * colors.length)],
+        vx: (Math.random() - 0.5) * 6,
+        vy: Math.random() * 4 + 2,
+        rot: Math.random() * 360,
+        vRot: (Math.random() - 0.5) * 10
+      });
+    }
+
+    var animFrame;
+    var startTime = Date.now();
+
+    function renderAnim() {
+      var elapsed = Date.now() - startTime;
+      if (elapsed > (isGrand ? 3500 : 2000)) {
+        ctx.clearRect(0, 0, width, height);
+        cancelAnimationFrame(animFrame);
+        return;
+      }
+
+      ctx.clearRect(0, 0, width, height);
+      for (var j = 0; j < particles.length; j++) {
+        var p = particles[j];
+        p.x += p.vx;
+        p.y += p.vy;
+        p.rot += p.vRot;
+
+        ctx.save();
+        ctx.translate(p.x, p.y);
+        ctx.rotate((p.rot * Math.PI) / 180);
+        ctx.fillStyle = p.color;
+        ctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size);
+        ctx.restore();
+      }
+      animFrame = requestAnimationFrame(renderAnim);
+    }
+    renderAnim();
+  }
+// اضافه کردن صدای مرموز به همه دکمه‌ها
+document.querySelectorAll('.btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+        playMysteriousClick();
+    });
+});
+// تابع ساخت متن گزارش برای کپی
+function generateReportText() {
+  var name = state.fullName;
+  var date = new Date().toLocaleDateString('fa-IR', { 
+    year: 'numeric', 
+    month: '2-digit', 
+    day: '2-digit' 
+  });
+  
+  var modeText = state.isTimed 
+    ? 'حالت زمان‌دار (۳۰ ثانیه)' 
+    : 'حالت معمولی (بدون محدودیت زمانی)';
+  
+  // ===== منطق مدال جدید =====
+  var medalTitle = document.getElementById('reportTitle').textContent || '';
+  var medalEmoji = '🥈';
+  var medalText = '';
+
+  if (medalTitle.includes('طلایی') || medalTitle.includes('استاد اعظم')) {
+    medalEmoji = '🥇';
+    medalText = 'استاد اعظم و قهرمان طلایی هندسه! 🥇';
+  } else if (medalTitle.includes('نقره')) {
+    medalEmoji = '🥈';
+    medalText = 'قهرمان نقره‌ای هندسه! 🥈';
+  } else {
+    medalEmoji = '🥉';
+    medalText = 'قهرمان برنزی هندسه! 🥉';
+  }
+  // ===========================
+
+  var scoreText = document.getElementById('finalScoreVal').textContent.replace('/', 'از');
+  
+  var reportResults = getReportResults();
+  var correctCount = toPersianDigits(reportResults.filter(function(r) { return r.isCorrect === true; }).length);
+  var wrongCount = toPersianDigits(reportResults.filter(function(r) { return r.isCorrect === false; }).length);
+
+  var text = '📋 گزارش عملکرد سفر قهرمان هندسه\n\n';
+  text += '👤 نام دانش‌آموز: ' + name + '\n';
+  text += '🏫 شماره کلاس: ' + state.classNumber + '\n';
+  text += '📅 تاریخ: ' + date + '\n';
+  text += '⏱️ حالت بازی: ' + modeText + '\n';
+  text += '🏅 مدال: ' + medalText + '\n';
+  text += '🎯 امتیاز نهایی: ' + scoreText + '\n';
+  text += '✅ تعداد پاسخ‌های درست: ' + correctCount + '\n';
+  text += '❌ تعداد پاسخ‌های نادرست: ' + wrongCount + '\n\n';
+  
+  text += 'عملکرد به تفکیک اشکال هندسی:\n\n';
+
+  var shapes = [
+  { num: '1️⃣', name: 'مربع' },
+  { num: '2️⃣', name: 'مستطیل' },
+  { num: '3️⃣', name: 'متوازی‌الاضلاع' },
+  { num: '4️⃣', name: 'مثلث' },
+  { num: '5️⃣', name: 'لوزی' },
+  { num: '6️⃣', name: 'ذوزنقه' },
+  { num: '7️⃣', name: 'دایره' }
+];
+
+  islandsInfo.forEach(function(isl, index) {
+    var pRes = reportResults.find(function(r) { return r.shapeId === isl.id && r.type === 'perimeter'; });
+    var aRes = reportResults.find(function(r) { return r.shapeId === isl.id && r.type === 'area'; });
+    var perimeter = !pRes ? '—' : (pRes.isCorrect === true ? '✅' : '❌');
+    var area = !aRes ? '—' : (aRes.isCorrect === true ? '✅' : '❌');
+    var status = pRes && aRes && pRes.isCorrect === true && aRes.isCorrect === true
+      ? '⭐️ فتح کامل' : '⚠️ نیازمند تمرین';
+
+    text += shapes[index].num + ' ' + isl.name + ' : ' +
+      'محیط ' + perimeter + ' | مساحت ' + area + ' | وضعیت: ' + status + '\n';
+  });
+
+  text += '\n💬 پیام بازی:\n';
+  if (medalText.includes('طلایی')) {
+  text += 'فوق‌العاده بود قهرمان! تسلطت روی محیط و مساحت شکل‌ها واقعاً درخشان بود. 🥇\n\n';
+} else if (medalText.includes('نقره')) {
+  text += 'عملکرد خیلی خوبی داشتی! با کمی تمرین بیشتر، به راحتی به مدال طلایی می‌رسی.\n\n';
+} else {
+  text += 'خوب شروع کردی! حالا که با جزیره‌ها آشنا شدی، دفعه بعد خیلی قوی‌تر برمی‌گردی.\n\n';
+}
+
+  text += '💡 با باشگاه ریاضی، قهرمان چالش‌های محیط و مساحت باش!\n';
+  text += '🆔 @MathClub789';
+
+  return text;
+}
+
+// نمایش اعلان کپی شدن گزارش
+function showCopyNotification() {
+  var notif = document.createElement('div');
+  notif.style.cssText = 'position:fixed;top:20px;left:50%;transform:translateX(-50%);background:#10b981;color:white;padding:12px 24px;border-radius:12px;box-shadow:0 4px 12px rgba(0,0,0,0.2);z-index:9999;font-size:15px;';
+  notif.textContent = '✅ گزارش عملکرد با موفقیت کپی شد!';
+  document.body.appendChild(notif);
+
+  setTimeout(function() {
+    notif.style.transition = 'opacity 0.4s';
+    notif.style.opacity = '0';
+    setTimeout(function() {
+      document.body.removeChild(notif);
+    }, 400);
+  }, 2500);
+}
+
+});
+</script>
+</body>
+</html>
